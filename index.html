@@ -18,6 +18,22 @@
                 }
             }
         }
+        // Enable logging (optional, helpful for debugging)
+    Pusher.logToConsole = true;
+
+    // Initialize Pusher
+    const pusher = new Pusher('34c3cbec9bc210bcb8c0', {
+      cluster: 'eu',
+    });
+
+    // Subscribe to your channel
+    const channel = pusher.subscribe('score-channel');
+
+    // Listen for events
+    channel.bind('score-updated', function(data) {
+      // Update the score on the page
+      document.getElementById('score').innerText = data.score;
+    })
     </script>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
