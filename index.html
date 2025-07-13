@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Player Scoring Tracker</title>
+    <title>ITV7 Season</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -69,45 +69,61 @@
             </div>
         </div>
 
-        <!-- Score Table -->
+        <!-- Charts Toggle Button -->
+        <div class="mb-6">
+            <button onclick="toggleCharts()" class="w-full sm:w-auto bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
+                <svg id="chartsIcon" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span id="chartsButtonText">Show Charts & Trends</span>
+            </button>
+        </div>
+
+        <!-- Score Table - Mobile Optimized -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-6">
-            <div class="overflow-x-auto">
+            <!-- Desktop Table -->
+            <div class="hidden lg:block overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
-                            <th class="px-3 py-3 text-left font-medium text-gray-600 dark:text-gray-300">Round</th>
-                            <th colspan="5" class="px-3 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Eggman</th>
-                            <th colspan="5" class="px-3 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">George</th>
-                            <th colspan="5" class="px-3 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Chris</th>
+                            <th class="px-2 py-3 text-left font-medium text-gray-600 dark:text-gray-300 w-16">Round</th>
+                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Eggman</th>
+                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">George</th>
+                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Chris</th>
                         </tr>
                         <tr class="bg-gray-100 dark:bg-gray-600">
-                            <th class="px-3 py-2"></th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Win</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Place</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">H.Odds</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Bonus</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Total</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400 border-l border-gray-200 dark:border-gray-500">Win</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Place</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">H.Odds</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Bonus</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Total</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400 border-l border-gray-200 dark:border-gray-500">Win</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Place</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">H.Odds</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Bonus</th>
-                            <th class="px-2 py-2 text-xs text-gray-500 dark:text-gray-400">Total</th>
+                            <th class="px-2 py-2"></th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">W</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">P</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">HO</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">B</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">Tot</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400 border-l border-gray-200 dark:border-gray-500">W</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">P</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">HO</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">B</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">Tot</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400 border-l border-gray-200 dark:border-gray-500">W</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">P</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">HO</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">B</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">Tot</th>
                         </tr>
                     </thead>
-                    <tbody id="scoreTableBody">
+                    <tbody id="scoreTableBodyDesktop">
                         <!-- Rows will be added dynamically -->
                     </tbody>
                 </table>
             </div>
+
+            <!-- Mobile Cards -->
+            <div class="lg:hidden" id="scoreTableMobile">
+                <!-- Cards will be added dynamically -->
+            </div>
         </div>
 
-        <!-- Charts -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Charts - Hidden by default -->
+        <div id="chartsSection" class="hidden grid-cols-1 lg:grid-cols-2 gap-6">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-lg font-semibold mb-4">Cumulative Score Trend</h3>
                 <canvas id="trendChart" width="400" height="200"></canvas>
@@ -187,8 +203,36 @@
             updateCharts();
         }
 
+        function toggleCharts() {
+            const chartsSection = document.getElementById('chartsSection');
+            const chartsIcon = document.getElementById('chartsIcon');
+            const chartsButtonText = document.getElementById('chartsButtonText');
+            
+            if (chartsSection.classList.contains('hidden')) {
+                chartsSection.classList.remove('hidden');
+                chartsSection.classList.add('grid');
+                chartsIcon.style.transform = 'rotate(180deg)';
+                chartsButtonText.textContent = 'Hide Charts & Trends';
+                // Initialize charts if they haven't been created yet
+                if (!trendChart || !breakdownChart) {
+                    initCharts();
+                }
+                updateCharts();
+            } else {
+                chartsSection.classList.add('hidden');
+                chartsSection.classList.remove('grid');
+                chartsIcon.style.transform = 'rotate(0deg)';
+                chartsButtonText.textContent = 'Show Charts & Trends';
+            }
+        }
+
         function updateTable() {
-            const tbody = document.getElementById('scoreTableBody');
+            updateDesktopTable();
+            updateMobileTable();
+        }
+
+        function updateDesktopTable() {
+            const tbody = document.getElementById('scoreTableBodyDesktop');
             tbody.innerHTML = '';
             
             rounds.forEach((round, index) => {
@@ -200,7 +244,7 @@
                 const chrisTotal = calculateRoundTotal(round.chris);
                 
                 row.innerHTML = `
-                    <td class="px-3 py-3 font-medium">${round.round}</td>
+                    <td class="px-2 py-3 font-medium">${round.round}</td>
                     ${createPlayerCells('eggman', round.eggman, index, eggmanTotal)}
                     ${createPlayerCells('george', round.george, index, georgeTotal)}
                     ${createPlayerCells('chris', round.chris, index, chrisTotal)}
@@ -208,6 +252,71 @@
                 
                 tbody.appendChild(row);
             });
+        }
+
+        function updateMobileTable() {
+            const container = document.getElementById('scoreTableMobile');
+            container.innerHTML = '';
+            
+            rounds.forEach((round, index) => {
+                const card = document.createElement('div');
+                card.className = 'p-4 border-b border-gray-200 dark:border-gray-600';
+                
+                const eggmanTotal = calculateRoundTotal(round.eggman);
+                const georgeTotal = calculateRoundTotal(round.george);
+                const chrisTotal = calculateRoundTotal(round.chris);
+                
+                card.innerHTML = `
+                    <div class="font-semibold text-lg mb-3 text-center">Round ${round.round}</div>
+                    <div class="space-y-4">
+                        ${createMobilePlayerCard('Eggman', 'eggman', round.eggman, index, eggmanTotal, '#3B82F6')}
+                        ${createMobilePlayerCard('George', 'george', round.george, index, georgeTotal, '#10B981')}
+                        ${createMobilePlayerCard('Chris', 'chris', round.chris, index, chrisTotal, '#8B5CF6')}
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        function createMobilePlayerCard(playerDisplayName, playerName, playerData, roundIndex, total, color) {
+            const readonly = isAdminMode ? '' : 'readonly';
+            const inputClass = `w-16 px-2 py-2 text-center text-base border rounded ${isAdminMode ? 'bg-white dark:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600'} border-gray-300 dark:border-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none`;
+            
+            return `
+                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="font-medium" style="color: ${color}">${playerDisplayName}</div>
+                        <div class="font-bold text-lg">${total}</div>
+                    </div>
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <div class="text-center">
+                            <div class="text-gray-600 dark:text-gray-400 mb-1">Win</div>
+                            <input type="number" value="${playerData.win}" min="0" max="99" ${readonly}
+                                   class="${inputClass}"
+                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'win', this.value); updateTable();">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-gray-600 dark:text-gray-400 mb-1">Place</div>
+                            <input type="number" value="${playerData.place}" min="0" max="99" ${readonly}
+                                   class="${inputClass}"
+                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'place', this.value); updateTable();">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-gray-600 dark:text-gray-400 mb-1">H.Odds</div>
+                            <input type="number" value="${playerData.highestOdds}" min="0" max="99" ${readonly}
+                                   class="${inputClass}"
+                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'highestOdds', this.value); updateTable();">
+                        </div>
+                        <div class="text-center">
+                            <div class="text-gray-600 dark:text-gray-400 mb-1">Bonus</div>
+                            <input type="number" value="${playerData.bonus}" min="-99" max="99" ${readonly}
+                                   class="${inputClass}"
+                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'bonus', this.value); updateTable();">
+                        </div>
+                    </div>
+                </div>
+            `;
         }
 
         function createPlayerCells(playerName, playerData, roundIndex, total) {
