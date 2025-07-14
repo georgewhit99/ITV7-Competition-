@@ -20,6 +20,12 @@ test Pusher 2
                 }
             }
         }
+        // On page load, fetch the current score
+fetch('/.netlify/functions/update-score')
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById('score').innerText = data.score;
+  });
     </script>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
