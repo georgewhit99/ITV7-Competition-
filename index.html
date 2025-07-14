@@ -1,9 +1,12 @@
+test Pusher
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Player Scoring Tracker</title>
+    <script src="https://js.pusher.com/8.2/pusher.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -682,6 +685,32 @@
                 addRound();
             }
         });
+         <h2>Score: <span id="score">0</span></h2>
+    <input id="scoreInput" type="text" placeholder="Enter new score">
+<button onclick="updateScore()">Update Score</button>
+
     </script>
-</body>
+    <script>
+  // Connect to Pusher
+  const pusher = new Pusher('34c3cbec9bc210bcb8c0', {
+    cluster: 'eu'
+  });
+
+  // Subscribe to channel and event
+  const channel = pusher.subscribe('score-channel');
+  channel.bind('score-updated', function(data) {
+    document.getElementById('score').innerText = data.score;
+  });
+
+  // Function to send updated score to backend
+  function updateScore() {
+    const newScore = document.getElementById('scoreInput').value;
+    fetch('/.netlify/functions/update-score', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ score: newScore })
+    });
+  }
+</script>
+    </body>
 </html>
