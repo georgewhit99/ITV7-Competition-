@@ -1,3 +1,7 @@
+G
+
+ G
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,7 +133,17 @@
             </div>
         </div>
 
-
+        <!-- Charts - Hidden by default -->
+        <div id="chartsSection" class="hidden grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-lg font-semibold mb-4">Cumulative Score Trend</h3>
+                <canvas id="trendChart" width="400" height="200"></canvas>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-lg font-semibold mb-4">Score Breakdown</h3>
+                <canvas id="breakdownChart" width="400" height="200"></canvas>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -290,7 +304,7 @@
             const errorDiv = document.getElementById('passwordError');
             const password = passwordInput.value;
             
-            if (password === '99') {
+            if (password === 'Geo123geo') {
                 isAdminMode = true;
                 updateAdminToggleAppearance(true);
                 document.getElementById('addRoundBtn').disabled = false;
@@ -336,9 +350,9 @@
             const roundNumber = rounds.length + 1;
             const newRound = {
                 round: roundNumber,
-                eggman: { win: '', place: '', highestOdds: '', bonus: '' },
-                george: { win: '', place: '', highestOdds: '', bonus: '' },
-                chris: { win: '', place: '', highestOdds: '', bonus: '' }
+                eggman: { win: 0, place: 0, highestOdds: 0, bonus: 0 },
+                george: { win: 0, place: 0, highestOdds: 0, bonus: 0 },
+                chris: { win: 0, place: 0, highestOdds: 0, bonus: 0 }
             };
             
             rounds.unshift(newRound);
@@ -349,80 +363,38 @@
         }
 
         function calculateRoundTotal(player) {
-            const win = parseInt(player.win) || 0;
-            const place = parseInt(player.place) || 0;
-            const highestOdds = parseInt(player.highestOdds) || 0;
-            const bonus = parseInt(player.bonus) || 0;
-            return (win * 3) + (place * 1) + (highestOdds * 5) + bonus;
+            return (player.win * 3) + (player.place * 1) + (player.highestOdds * 5) + player.bonus;
         }
 
         function updateRoundData(roundIndex, player, field, value) {
             if (!isAdminMode) return;
             
-            rounds[roundIndex][player][field] = value === '' ? '' : (parseInt(value) || '');
+            rounds[roundIndex][player][field] = parseInt(value) || 0;
             updateTotals();
             updateCharts();
             sendScoreUpdate();
         }
 
         function toggleCharts() {
-            showChartsModal();
-        }
-
-        function showChartsModal() {
-            const modal = document.createElement('div');
-            modal.id = 'chartsModal';
-            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
-            modal.innerHTML = `
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-                    <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-600 p-6 rounded-t-lg">
-                        <div class="flex justify-between items-center">
-                            <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Charts & Trends</h2>
-                            <button onclick="closeChartsModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
-                                <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Cumulative Score Trend</h3>
-                                <div class="h-80">
-                                    <canvas id="trendChart" width="400" height="320"></canvas>
-                                </div>
-                            </div>
-                            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
-                                <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Score Breakdown</h3>
-                                <div class="h-80">
-                                    <canvas id="breakdownChart" width="400" height="320"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(modal);
+            const chartsSection = document.getElementById('chartsSection');
+            const chartsIcon = document.getElementById('chartsIcon');
+            const chartsButtonText = document.getElementById('chartsButtonText');
             
-            // Initialize charts if they haven't been created yet
-            if (!trendChart || !breakdownChart) {
-                initCharts();
-            }
-            updateCharts();
-            
-            // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeChartsModal();
+            if (chartsSection.classList.contains('hidden')) {
+                chartsSection.classList.remove('hidden');
+                chartsSection.classList.add('grid');
+                chartsIcon.style.transform = 'rotate(180deg)';
+                chartsButtonText.textContent = 'Hide Charts & Trends';
+                // Initialize charts if they haven't been created yet
+                if (!trendChart || !breakdownChart) {
+                    initCharts();
                 }
-            });
-        }
-
-        function closeChartsModal() {
-            const modal = document.getElementById('chartsModal');
-            if (modal) {
-                document.body.removeChild(modal);
+                updateCharts();
+            } else {
+                chartsSection.classList.add('hidden');
+                chartsSection.classList.remove('grid');
+                chartsIcon.style.transform = 'rotate(0deg)';
+                chartsButtonText.textContent = 'Show Charts & Trends';
             }
         }
 
