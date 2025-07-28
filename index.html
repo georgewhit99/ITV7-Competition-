@@ -1,7 +1,3 @@
-G
-
- G
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -350,9 +346,9 @@ G
             const roundNumber = rounds.length + 1;
             const newRound = {
                 round: roundNumber,
-                eggman: { win: 0, place: 0, highestOdds: 0, bonus: 0 },
-                george: { win: 0, place: 0, highestOdds: 0, bonus: 0 },
-                chris: { win: 0, place: 0, highestOdds: 0, bonus: 0 }
+                eggman: { win: '', place: '', highestOdds: '', bonus: '' },
+                george: { win: '', place: '', highestOdds: '', bonus: '' },
+                chris: { win: '', place: '', highestOdds: '', bonus: '' }
             };
             
             rounds.unshift(newRound);
@@ -363,13 +359,17 @@ G
         }
 
         function calculateRoundTotal(player) {
-            return (player.win * 3) + (player.place * 1) + (player.highestOdds * 5) + player.bonus;
+            const win = parseInt(player.win) || 0;
+            const place = parseInt(player.place) || 0;
+            const highestOdds = parseInt(player.highestOdds) || 0;
+            const bonus = parseInt(player.bonus) || 0;
+            return (win * 3) + (place * 1) + (highestOdds * 5) + bonus;
         }
 
         function updateRoundData(roundIndex, player, field, value) {
             if (!isAdminMode) return;
             
-            rounds[roundIndex][player][field] = parseInt(value) || 0;
+            rounds[roundIndex][player][field] = value === '' ? '' : (parseInt(value) || '');
             updateTotals();
             updateCharts();
             sendScoreUpdate();
