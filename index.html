@@ -1,4 +1,3 @@
-test Pusher 2
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,12 +19,6 @@ test Pusher 2
                 }
             }
         }
-        // On page load, fetch the current score
-fetch('/.netlify/functions/update-score')
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById('score').innerText = data.score;
-  });
     </script>
 </head>
 <body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen">
@@ -35,6 +28,12 @@ fetch('/.netlify/functions/update-score')
             <div>
                 <h1 class="text-3xl font-bold text-primary dark:text-primary-light">ITV7 Tracker</h1>
                 <p class="text-gray-600 dark:text-gray-400 mt-1">Track wins, places, highest odds, and bonus points</p>
+                <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    <span id="connectionStatus" class="inline-flex items-center">
+                        <span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>
+                        Connecting...
+                    </span>
+                </div>
             </div>
             <div class="flex items-center gap-4">
                 <label class="flex items-center cursor-pointer">
@@ -148,6 +147,7 @@ fetch('/.netlify/functions/update-score')
         let rounds = [];
         let isAdminMode = false;
         let trendChart, breakdownChart;
+        let pusher, channel;
 
         // Dark mode detection
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -161,6 +161,100 @@ fetch('/.netlify/functions/update-score')
             }
             updateCharts();
         });
+
+        // Initialize Pusher connection
+        function initPusher() {
+            try {
+                pusher = new Pusher('34c3cbec9bc210bcb8c0', {
+                    cluster: 'eu'
+                });
+
+                channel = pusher.subscribe('score-channel');
+                
+                pusher.connection.bind('connected', function() {
+                    updateConnectionStatus('connected');
+                });
+                
+                pusher.connection.bind('disconnected', function() {
+                    updateConnectionStatus('disconnected');
+                });
+                
+                pusher.connection.bind('failed', function() {
+                    updateConnectionStatus('failed');
+                });
+
+                channel.bind('score-updated', function(data) {
+                    if (data.scoreData && data.scoreData.rounds) {
+                        rounds = data.scoreData.rounds;
+                        updateTable();
+                        updateTotals();
+                        updateCharts();
+                    }
+                });
+            } catch (error) {
+                console.error('Failed to initialize Pusher:', error);
+                updateConnectionStatus('failed');
+            }
+        }
+
+        function updateConnectionStatus(status) {
+            const statusElement = document.getElementById('connectionStatus');
+            const dot = statusElement.querySelector('span');
+            
+            switch(status) {
+                case 'connected':
+                    dot.className = 'w-2 h-2 bg-green-500 rounded-full mr-2';
+                    statusElement.innerHTML = '<span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Connected';
+                    break;
+                case 'disconnected':
+                    dot.className = 'w-2 h-2 bg-yellow-500 rounded-full mr-2';
+                    statusElement.innerHTML = '<span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>Disconnected';
+                    break;
+                case 'failed':
+                    dot.className = 'w-2 h-2 bg-red-500 rounded-full mr-2';
+                    statusElement.innerHTML = '<span class="w-2 h-2 bg-red-500 rounded-full mr-2"></span>Connection Failed';
+                    break;
+                default:
+                    dot.className = 'w-2 h-2 bg-gray-400 rounded-full mr-2';
+                    statusElement.innerHTML = '<span class="w-2 h-2 bg-gray-400 rounded-full mr-2"></span>Connecting...';
+            }
+        }
+
+        // Load initial data
+        async function loadInitialData() {
+            try {
+                const response = await fetch('/.netlify/functions/update-score');
+                const data = await response.json();
+                if (data.scoreData && data.scoreData.rounds) {
+                    rounds = data.scoreData.rounds;
+                    updateTable();
+                    updateTotals();
+                    updateCharts();
+                }
+            } catch (error) {
+                console.error('Failed to load initial data:', error);
+            }
+        }
+
+        // Send score update to backend
+        async function sendScoreUpdate() {
+            if (!isAdminMode) return;
+            
+            try {
+                await fetch('/.netlify/functions/update-score', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        scoreData: { 
+                            rounds: rounds,
+                            lastUpdated: new Date().toISOString()
+                        } 
+                    })
+                });
+            } catch (error) {
+                console.error('Failed to send score update:', error);
+            }
+        }
 
         // Password modal functions
         function showPasswordModal() {
@@ -261,6 +355,7 @@ fetch('/.netlify/functions/update-score')
             updateTable();
             updateTotals();
             updateCharts();
+            sendScoreUpdate();
         }
 
         function calculateRoundTotal(player) {
@@ -273,6 +368,7 @@ fetch('/.netlify/functions/update-score')
             rounds[roundIndex][player][field] = parseInt(value) || 0;
             updateTotals();
             updateCharts();
+            sendScoreUpdate();
         }
 
         function toggleCharts() {
@@ -570,35 +666,12 @@ fetch('/.netlify/functions/update-score')
             breakdownChart.update();
         }
 
-        // Initialize
+        // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
             initCharts();
-            // Add a sample round for demonstration
-            addRound();
+            initPusher();
+            loadInitialData();
         });
-        
     </script>
-    <script>
-  // Connect to Pusher
-  const pusher = new Pusher(34c3cbec9bc210bcb8c0, {
-    cluster: eu
-  });
-
-  // Subscribe to channel and event
-  const channel = pusher.subscribe('score-channel');
-  channel.bind('score-updated', function(data) {
-    document.getElementById('score').innerText = data.score;
-  });
-
-  // Function to send updated score to backend
-  function updateScore() {
-    const newScore = document.getElementById('scoreInput').value;
-    fetch('/.netlify/functions/update-score', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ score: newScore })
-    });
-  }
-</script>
-    </body>
+</body>
 </html>
