@@ -3,10 +3,10 @@ const Pusher = require('pusher');
 let latestScore = 0;
 
 const pusher = new Pusher({
-  appId: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_KEY,
-  secret: process.env.PUSHER_SECRET,
-  cluster: process.env.PUSHER_CLUSTER,
+  appId: process.env.2021934,
+  key: process.env.34c3cbec9bc210bcb8c0,
+  secret: process.env.bf7971377aae56741385,
+  cluster: process.env.eu,
   useTLS: true
 });
 
