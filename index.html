@@ -1,3 +1,5 @@
+ G
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +70,7 @@
             </div>
             <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-lg">
                 <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="georgeTotal">0</div>
-                <div class="text-sm text-green-600 dark:text-green-400">George</div>
+                <div class="text-sm text-green-600 dark:text-green-400">George 👑</div>
             </div>
             <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-lg">
                 <div class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="chrisTotal">0</div>
@@ -95,7 +97,7 @@
                         <tr>
                             <th class="px-2 py-3 text-left font-medium text-gray-600 dark:text-gray-300 w-16">Round</th>
                             <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Eggman</th>
-                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">George</th>
+                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">George 👑</th>
                             <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Chris</th>
                         </tr>
                         <tr class="bg-gray-100 dark:bg-gray-600">
@@ -351,7 +353,7 @@
                 chris: { win: 0, place: 0, highestOdds: 0, bonus: 0 }
             };
             
-            rounds.push(newRound);
+            rounds.unshift(newRound);
             updateTable();
             updateTotals();
             updateCharts();
@@ -438,7 +440,7 @@
                     <div class="font-semibold text-lg mb-3 text-center">Round ${round.round}</div>
                     <div class="space-y-4">
                         ${createMobilePlayerCard('Eggman', 'eggman', round.eggman, index, eggmanTotal, '#3B82F6')}
-                        ${createMobilePlayerCard('George', 'george', round.george, index, georgeTotal, '#10B981')}
+                        ${createMobilePlayerCard('George 👑', 'george', round.george, index, georgeTotal, '#10B981')}
                         ${createMobilePlayerCard('Chris', 'chris', round.chris, index, chrisTotal, '#8B5CF6')}
                     </div>
                 `;
@@ -630,21 +632,22 @@
             breakdownChart.options.plugins.legend.labels.color = textColor;
             breakdownChart.data.datasets[0].borderColor = isDark ? '#1F2937' : '#FFFFFF';
             
-            // Update trend data
-            const labels = rounds.map((_, index) => `Round ${index + 1}`);
+            // Update trend data - reverse order for correct chronological display
+            const sortedRounds = [...rounds].reverse();
+            const labels = sortedRounds.map((_, index) => `Round ${index + 1}`);
             let eggmanCumulative = 0, georgeCumulative = 0, chrisCumulative = 0;
             
-            const eggmanData = rounds.map(round => {
+            const eggmanData = sortedRounds.map(round => {
                 eggmanCumulative += calculateRoundTotal(round.eggman);
                 return eggmanCumulative;
             });
             
-            const georgeData = rounds.map(round => {
+            const georgeData = sortedRounds.map(round => {
                 georgeCumulative += calculateRoundTotal(round.george);
                 return georgeCumulative;
             });
             
-            const chrisData = rounds.map(round => {
+            const chrisData = sortedRounds.map(round => {
                 chrisCumulative += calculateRoundTotal(round.chris);
                 return chrisCumulative;
             });
