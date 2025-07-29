@@ -1,5 +1,3 @@
-G
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -766,6 +764,7 @@ G
         }
 
         function updateCharts() {
+            // Only update charts if they exist (modal is open)
             if (!trendChart || !breakdownChart || !favBackerChart) return;
             
             const isDark = document.documentElement.classList.contains('dark');
@@ -848,7 +847,6 @@ G
 
         // Initialize everything
         document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
             initPusher();
             loadInitialData();
         });
