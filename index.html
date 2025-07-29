@@ -1,6 +1,4 @@
-G
-
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,12 +50,13 @@ G
         </div>
 
         <!-- Scoring Rules -->
-      <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-6">
+        <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-6">
             <h3 class="font-semibold text-sm mb-2">Scoring Rules:</h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-sm">
                 <div class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Win: 3 points</div>
                 <div class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Place: 1 point</div>
                 <div class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Highest Odds: 5 points</div>
+                <div class="flex items-center"><span class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>Fav Backer: Tracking only</div>
             </div>
         </div>
 
@@ -66,14 +65,17 @@ G
             <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-lg">
                 <div class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="eggmanTotal">0</div>
                 <div class="text-sm text-blue-600 dark:text-blue-400">Eggman</div>
+                <div class="text-xs text-blue-500 dark:text-blue-300 mt-1">Fav Backer: <span id="eggmanFavCount">0</span></div>
             </div>
             <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-lg">
                 <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="georgeTotal">0</div>
                 <div class="text-sm text-green-600 dark:text-green-400">George 👑</div>
+                <div class="text-xs text-green-500 dark:text-green-300 mt-1">Fav Backer: <span id="georgeFavCount">0</span></div>
             </div>
             <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-lg">
                 <div class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="chrisTotal">0</div>
                 <div class="text-sm text-purple-600 dark:text-purple-400">Chris</div>
+                <div class="text-xs text-purple-500 dark:text-purple-300 mt-1">Fav Backer: <span id="chrisFavCount">0</span></div>
             </div>
         </div>
 
@@ -95,9 +97,9 @@ G
                     <thead class="bg-gray-50 dark:bg-gray-700">
                         <tr>
                             <th class="px-2 py-3 text-left font-medium text-gray-600 dark:text-gray-300 w-16">Round</th>
-                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Eggman</th>
-                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">George 👑</th>
-                            <th colspan="5" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Chris</th>
+                            <th colspan="6" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Eggman</th>
+                            <th colspan="6" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">George 👑</th>
+                            <th colspan="6" class="px-2 py-3 text-center font-medium text-gray-600 dark:text-gray-300 border-l border-gray-200 dark:border-gray-600">Chris</th>
                         </tr>
                         <tr class="bg-gray-100 dark:bg-gray-600">
                             <th class="px-2 py-2"></th>
@@ -105,16 +107,19 @@ G
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">P</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">HO</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">B</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">FB</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">Tot</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400 border-l border-gray-200 dark:border-gray-500">W</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">P</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">HO</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">B</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">FB</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">Tot</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400 border-l border-gray-200 dark:border-gray-500">W</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">P</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">HO</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">B</th>
+                            <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">FB</th>
                             <th class="px-1 py-2 text-xs text-gray-500 dark:text-gray-400">Tot</th>
                         </tr>
                     </thead>
@@ -131,7 +136,7 @@ G
         </div>
 
         <!-- Charts - Hidden by default -->
-        <div id="chartsSection" class="hidden grid-cols-1 lg:grid-cols-2 gap-6">
+        <div id="chartsSection" class="hidden grid-cols-1 lg:grid-cols-3 gap-6">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-lg font-semibold mb-4">Cumulative Score Trend</h3>
                 <canvas id="trendChart" width="400" height="200"></canvas>
@@ -140,6 +145,10 @@ G
                 <h3 class="text-lg font-semibold mb-4">Score Breakdown</h3>
                 <canvas id="breakdownChart" width="400" height="200"></canvas>
             </div>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-lg font-semibold mb-4">Fav Backer Trend</h3>
+                <canvas id="favBackerChart" width="400" height="200"></canvas>
+            </div>
         </div>
     </div>
 
@@ -147,7 +156,7 @@ G
         // Data storage
         let rounds = [];
         let isAdminMode = false;
-        let trendChart, breakdownChart;
+        let trendChart, breakdownChart, favBackerChart;
         let pusher, channel;
 
         // Dark mode detection
@@ -267,7 +276,7 @@ G
                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Admin Access Required</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">Please enter the password to enable admin mode:</p>
                     <input type="password" id="passwordInput" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none mb-4" placeholder="Enter password">
-                    <div id="passwordError" class="text-red-500 text-sm mb-4 hidden">No the password isnt Watersmeet, I'm not that stupid!</div>
+                    <div id="passwordError" class="text-red-500 text-sm mb-4 hidden">Incorrect password. Please try again.</div>
                     <div class="flex justify-end space-x-3">
                         <button onclick="closePasswordModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
                         <button onclick="checkPassword()" class="px-4 py-2 bg-primary text-white hover:bg-primary-dark rounded-lg transition-colors">Submit</button>
@@ -347,9 +356,9 @@ G
             const roundNumber = rounds.length + 1;
             const newRound = {
                 round: roundNumber,
-                eggman: { win: '', place: '', highestOdds: '', bonus: '' },
-                george: { win: '', place: '', highestOdds: '', bonus: '' },
-                chris: { win: '', place: '', highestOdds: '', bonus: '' }
+                eggman: { win: '', place: '', highestOdds: '', bonus: '', favBacker: false },
+                george: { win: '', place: '', highestOdds: '', bonus: '', favBacker: false },
+                chris: { win: '', place: '', highestOdds: '', bonus: '', favBacker: false }
             };
             
             rounds.unshift(newRound);
@@ -370,7 +379,11 @@ G
         function updateRoundData(roundIndex, player, field, value) {
             if (!isAdminMode) return;
             
-            rounds[roundIndex][player][field] = value === '' ? '' : (parseInt(value) || '');
+            if (field === 'favBacker') {
+                rounds[roundIndex][player][field] = value;
+            } else {
+                rounds[roundIndex][player][field] = value === '' ? '' : (parseInt(value) || '');
+            }
             updateTotals();
             updateCharts();
             sendScoreUpdate();
@@ -387,7 +400,7 @@ G
                 chartsIcon.style.transform = 'rotate(180deg)';
                 chartsButtonText.textContent = 'Hide Charts & Trends';
                 // Initialize charts if they haven't been created yet
-                if (!trendChart || !breakdownChart) {
+                if (!trendChart || !breakdownChart || !favBackerChart) {
                     initCharts();
                 }
                 updateCharts();
@@ -454,6 +467,7 @@ G
 
         function createMobilePlayerCard(playerDisplayName, playerName, playerData, roundIndex, total, color) {
             const readonly = isAdminMode ? '' : 'readonly';
+            const disabled = isAdminMode ? '' : 'disabled';
             const inputClass = `w-16 px-2 py-2 text-center text-base border rounded ${isAdminMode ? 'bg-white dark:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600'} border-gray-300 dark:border-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none`;
             
             return `
@@ -462,7 +476,7 @@ G
                         <div class="font-medium" style="color: ${color}">${playerDisplayName}</div>
                         <div class="font-bold text-lg">${total}</div>
                     </div>
-                    <div class="grid grid-cols-4 gap-2 text-xs">
+                    <div class="grid grid-cols-5 gap-2 text-xs">
                         <div class="text-center">
                             <div class="text-gray-600 dark:text-gray-400 mb-1">Win</div>
                             <input type="number" value="${playerData.win}" min="0" max="99" ${readonly}
@@ -487,6 +501,12 @@ G
                                    class="${inputClass}"
                                    onchange="updateRoundData(${roundIndex}, '${playerName}', 'bonus', this.value); updateTable();">
                         </div>
+                        <div class="text-center">
+                            <div class="text-gray-600 dark:text-gray-400 mb-1">Fav Backer</div>
+                            <input type="checkbox" ${playerData.favBacker ? 'checked' : ''} ${disabled}
+                                   class="w-5 h-5 text-primary border-gray-300 dark:border-gray-500 rounded focus:ring-primary dark:focus:ring-primary dark:focus:ring-offset-gray-800 focus:ring-2 ${isAdminMode ? '' : 'opacity-50'}"
+                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'favBacker', this.checked); updateTable();">
+                        </div>
                     </div>
                 </div>
             `;
@@ -495,6 +515,7 @@ G
         function createPlayerCells(playerName, playerData, roundIndex, total) {
             const borderClass = playerName === 'eggman' ? '' : 'border-l border-gray-200 dark:border-gray-600';
             const readonly = isAdminMode ? '' : 'readonly';
+            const disabled = isAdminMode ? '' : 'disabled';
             const inputClass = `w-12 px-1 py-1 text-center text-base border rounded ${isAdminMode ? 'bg-white dark:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600'} border-gray-300 dark:border-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none`;
             
             return `
@@ -518,22 +539,36 @@ G
                            class="${inputClass}"
                            onchange="updateRoundData(${roundIndex}, '${playerName}', 'bonus', this.value)">
                 </td>
+                <td class="px-2 py-2 text-center">
+                    <input type="checkbox" ${playerData.favBacker ? 'checked' : ''} ${disabled}
+                           class="w-4 h-4 text-primary border-gray-300 dark:border-gray-500 rounded focus:ring-primary dark:focus:ring-primary dark:focus:ring-offset-gray-800 focus:ring-2 ${isAdminMode ? '' : 'opacity-50'}"
+                           onchange="updateRoundData(${roundIndex}, '${playerName}', 'favBacker', this.checked)">
+                </td>
                 <td class="px-2 py-2 font-medium">${total}</td>
             `;
         }
 
         function updateTotals() {
             let eggmanTotal = 0, georgeTotal = 0, chrisTotal = 0;
+            let eggmanFavCount = 0, georgeFavCount = 0, chrisFavCount = 0;
             
             rounds.forEach(round => {
                 eggmanTotal += calculateRoundTotal(round.eggman);
                 georgeTotal += calculateRoundTotal(round.george);
                 chrisTotal += calculateRoundTotal(round.chris);
+                
+                if (round.eggman.favBacker) eggmanFavCount++;
+                if (round.george.favBacker) georgeFavCount++;
+                if (round.chris.favBacker) chrisFavCount++;
             });
             
             document.getElementById('eggmanTotal').textContent = eggmanTotal;
             document.getElementById('georgeTotal').textContent = georgeTotal;
             document.getElementById('chrisTotal').textContent = chrisTotal;
+            
+            document.getElementById('eggmanFavCount').textContent = eggmanFavCount;
+            document.getElementById('georgeFavCount').textContent = georgeFavCount;
+            document.getElementById('chrisFavCount').textContent = chrisFavCount;
         }
 
         function initCharts() {
@@ -616,21 +651,81 @@ G
                     }
                 }
             });
+
+            // Fav Backer Chart
+            const favBackerCtx = document.getElementById('favBackerChart').getContext('2d');
+            favBackerChart = new Chart(favBackerCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Eggman Fav Backer',
+                            data: [],
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4,
+                            stepped: true
+                        },
+                        {
+                            label: 'George Fav Backer',
+                            data: [],
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            stepped: true
+                        },
+                        {
+                            label: 'Chris Fav Backer',
+                            data: [],
+                            borderColor: '#8B5CF6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4,
+                            stepped: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { 
+                                color: textColor,
+                                stepSize: 1
+                            },
+                            grid: { color: gridColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor }
+                        }
+                    }
+                }
+            });
         }
 
         function updateCharts() {
-            if (!trendChart || !breakdownChart) return;
+            if (!trendChart || !breakdownChart || !favBackerChart) return;
             
             const isDark = document.documentElement.classList.contains('dark');
             const textColor = isDark ? '#D1D5DB' : '#374151';
             const gridColor = isDark ? '#374151' : '#E5E7EB';
             
             // Update colors for dark mode
-            trendChart.options.scales.y.ticks.color = textColor;
-            trendChart.options.scales.x.ticks.color = textColor;
-            trendChart.options.scales.y.grid.color = gridColor;
-            trendChart.options.scales.x.grid.color = gridColor;
-            trendChart.options.plugins.legend.labels.color = textColor;
+            [trendChart, favBackerChart].forEach(chart => {
+                chart.options.scales.y.ticks.color = textColor;
+                chart.options.scales.x.ticks.color = textColor;
+                chart.options.scales.y.grid.color = gridColor;
+                chart.options.scales.x.grid.color = gridColor;
+                chart.options.plugins.legend.labels.color = textColor;
+            });
             
             breakdownChart.options.plugins.legend.labels.color = textColor;
             breakdownChart.data.datasets[0].borderColor = isDark ? '#1F2937' : '#FFFFFF';
@@ -639,6 +734,7 @@ G
             const sortedRounds = [...rounds].reverse();
             const labels = sortedRounds.map((_, index) => `Round ${index + 1}`);
             let eggmanCumulative = 0, georgeCumulative = 0, chrisCumulative = 0;
+            let eggmanFavCumulative = 0, georgeFavCumulative = 0, chrisFavCumulative = 0;
             
             const eggmanData = sortedRounds.map(round => {
                 eggmanCumulative += calculateRoundTotal(round.eggman);
@@ -654,11 +750,34 @@ G
                 chrisCumulative += calculateRoundTotal(round.chris);
                 return chrisCumulative;
             });
+
+            // Update fav backer data
+            const eggmanFavData = sortedRounds.map(round => {
+                if (round.eggman.favBacker) eggmanFavCumulative++;
+                return eggmanFavCumulative;
+            });
             
+            const georgeFavData = sortedRounds.map(round => {
+                if (round.george.favBacker) georgeFavCumulative++;
+                return georgeFavCumulative;
+            });
+            
+            const chrisFavData = sortedRounds.map(round => {
+                if (round.chris.favBacker) chrisFavCumulative++;
+                return chrisFavCumulative;
+            });
+            
+            // Update trend chart
             trendChart.data.labels = labels;
             trendChart.data.datasets[0].data = eggmanData;
             trendChart.data.datasets[1].data = georgeData;
             trendChart.data.datasets[2].data = chrisData;
+            
+            // Update fav backer chart
+            favBackerChart.data.labels = labels;
+            favBackerChart.data.datasets[0].data = eggmanFavData;
+            favBackerChart.data.datasets[1].data = georgeFavData;
+            favBackerChart.data.datasets[2].data = chrisFavData;
             
             // Update breakdown data
             const finalTotals = [
@@ -670,6 +789,7 @@ G
             
             trendChart.update();
             breakdownChart.update();
+            favBackerChart.update();
         }
 
         // Initialize everything
