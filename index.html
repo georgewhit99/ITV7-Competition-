@@ -142,7 +142,7 @@
         // Data storage
         let rounds = [];
         let isAdminMode = false;
-        let trendChart, breakdownChart, favBackerChart;
+        let trendChart, favBackerChart;
         let pusher, channel;
 
         // Dark mode detection
@@ -397,7 +397,7 @@
                     
                     <!-- Modal Content -->
                     <div class="flex-1 overflow-auto p-4 sm:p-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 h-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 h-full">
                             <!-- Cumulative Score Trend -->
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
                                 <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Cumulative Score Trend</h3>
@@ -406,17 +406,9 @@
                                 </div>
                             </div>
                             
-                            <!-- Score Breakdown -->
+                            <!-- Fav Backer Count -->
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
-                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Score Breakdown</h3>
-                                <div class="relative h-64 sm:h-80">
-                                    <canvas id="breakdownChart" class="w-full h-full"></canvas>
-                                </div>
-                            </div>
-                            
-                            <!-- Fav Backer Trend -->
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2 xl:col-span-1">
-                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Fav Backer Trend</h3>
+                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Fav Backer Count</h3>
                                 <div class="relative h-64 sm:h-80">
                                     <canvas id="favBackerChart" class="w-full h-full"></canvas>
                                 </div>
@@ -442,7 +434,7 @@
             
             // Initialize charts if they haven't been created yet
             setTimeout(() => {
-                if (!trendChart || !breakdownChart || !favBackerChart) {
+                if (!trendChart || !favBackerChart) {
                     initCharts();
                 }
                 updateCharts();
@@ -680,62 +672,19 @@
                 }
             });
 
-            // Breakdown Chart
-            const breakdownCtx = document.getElementById('breakdownChart').getContext('2d');
-            breakdownChart = new Chart(breakdownCtx, {
-                type: 'doughnut',
+            // Fav Backer Chart (Bar Chart)
+            const favBackerCtx = document.getElementById('favBackerChart').getContext('2d');
+            favBackerChart = new Chart(favBackerCtx, {
+                type: 'bar',
                 data: {
                     labels: ['Eggman', 'George', 'Chris'],
                     datasets: [{
+                        label: 'Fav Backer Count',
                         data: [0, 0, 0],
                         backgroundColor: ['#3B82F6', '#10B981', '#8B5CF6'],
-                        borderWidth: 2,
-                        borderColor: isDark ? '#1F2937' : '#FFFFFF'
+                        borderColor: ['#1E40AF', '#047857', '#6D28D9'],
+                        borderWidth: 1
                     }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: { color: textColor }
-                        }
-                    }
-                }
-            });
-
-            // Fav Backer Chart
-            const favBackerCtx = document.getElementById('favBackerChart').getContext('2d');
-            favBackerChart = new Chart(favBackerCtx, {
-                type: 'line',
-                data: {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: 'Eggman Fav Backer',
-                            data: [],
-                            borderColor: '#3B82F6',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4,
-                            stepped: true
-                        },
-                        {
-                            label: 'George Fav Backer',
-                            data: [],
-                            borderColor: '#10B981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            tension: 0.4,
-                            stepped: true
-                        },
-                        {
-                            label: 'Chris Fav Backer',
-                            data: [],
-                            borderColor: '#8B5CF6',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                            tension: 0.4,
-                            stepped: true
-                        }
-                    ]
                 },
                 options: {
                     responsive: true,
@@ -765,7 +714,7 @@
 
         function updateCharts() {
             // Only update charts if they exist (modal is open)
-            if (!trendChart || !breakdownChart || !favBackerChart) return;
+            if (!trendChart || !favBackerChart) return;
             
             const isDark = document.documentElement.classList.contains('dark');
             const textColor = isDark ? '#D1D5DB' : '#374151';
@@ -780,14 +729,11 @@
                 chart.options.plugins.legend.labels.color = textColor;
             });
             
-            breakdownChart.options.plugins.legend.labels.color = textColor;
-            breakdownChart.data.datasets[0].borderColor = isDark ? '#1F2937' : '#FFFFFF';
-            
             // Update trend data - reverse order for correct chronological display
             const sortedRounds = [...rounds].reverse();
             const labels = sortedRounds.map((_, index) => `Round ${index + 1}`);
             let eggmanCumulative = 0, georgeCumulative = 0, chrisCumulative = 0;
-            let eggmanFavCumulative = 0, georgeFavCumulative = 0, chrisFavCumulative = 0;
+            let eggmanFavCount = 0, georgeFavCount = 0, chrisFavCount = 0;
             
             const eggmanData = sortedRounds.map(round => {
                 eggmanCumulative += calculateRoundTotal(round.eggman);
@@ -804,20 +750,11 @@
                 return chrisCumulative;
             });
 
-            // Update fav backer data
-            const eggmanFavData = sortedRounds.map(round => {
-                if (round.eggman.favBacker) eggmanFavCumulative++;
-                return eggmanFavCumulative;
-            });
-            
-            const georgeFavData = sortedRounds.map(round => {
-                if (round.george.favBacker) georgeFavCumulative++;
-                return georgeFavCumulative;
-            });
-            
-            const chrisFavData = sortedRounds.map(round => {
-                if (round.chris.favBacker) chrisFavCumulative++;
-                return chrisFavCumulative;
+            // Calculate total fav backer counts (not cumulative for bar chart)
+            rounds.forEach(round => {
+                if (round.eggman.favBacker) eggmanFavCount++;
+                if (round.george.favBacker) georgeFavCount++;
+                if (round.chris.favBacker) chrisFavCount++;
             });
             
             // Update trend chart
@@ -826,22 +763,10 @@
             trendChart.data.datasets[1].data = georgeData;
             trendChart.data.datasets[2].data = chrisData;
             
-            // Update fav backer chart
-            favBackerChart.data.labels = labels;
-            favBackerChart.data.datasets[0].data = eggmanFavData;
-            favBackerChart.data.datasets[1].data = georgeFavData;
-            favBackerChart.data.datasets[2].data = chrisFavData;
-            
-            // Update breakdown data
-            const finalTotals = [
-                eggmanCumulative,
-                georgeCumulative,
-                chrisCumulative
-            ];
-            breakdownChart.data.datasets[0].data = finalTotals;
+            // Update fav backer bar chart with total counts
+            favBackerChart.data.datasets[0].data = [eggmanFavCount, georgeFavCount, chrisFavCount];
             
             trendChart.update();
-            breakdownChart.update();
             favBackerChart.update();
         }
 
