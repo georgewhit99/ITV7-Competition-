@@ -1,3 +1,5 @@
+g
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +17,17 @@
                     colors: {
                         primary: '#5D5CDE',
                         'primary-dark': '#4B4BC8'
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 2s infinite',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'wiggle': 'wiggle 1s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-3deg)' },
+                            '50%': { transform: 'rotate(3deg)' },
+                        }
                     }
                 }
             }
@@ -61,21 +74,10 @@
         </div>
 
         <!-- Current Standings -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div class="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/30 dark:to-blue-800/30 p-4 rounded-lg">
-                <div class="text-2xl font-bold text-blue-600 dark:text-blue-400" id="eggmanTotal">0</div>
-                <div class="text-sm text-blue-600 dark:text-blue-400">Eggman</div>
-                <div class="text-xs text-blue-500 dark:text-blue-300 mt-1">Fav Backer: <span id="eggmanFavCount">0</span></div>
-            </div>
-            <div class="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/30 dark:to-green-800/30 p-4 rounded-lg">
-                <div class="text-2xl font-bold text-green-600 dark:text-green-400" id="georgeTotal">0</div>
-                <div class="text-sm text-green-600 dark:text-green-400">George 👑</div>
-                <div class="text-xs text-green-500 dark:text-green-300 mt-1">Fav Backer: <span id="georgeFavCount">0</span></div>
-            </div>
-            <div class="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/30 dark:to-purple-800/30 p-4 rounded-lg">
-                <div class="text-2xl font-bold text-purple-600 dark:text-purple-400" id="chrisTotal">0</div>
-                <div class="text-sm text-purple-600 dark:text-purple-400">Chris</div>
-                <div class="text-xs text-purple-500 dark:text-purple-300 mt-1">Fav Backer: <span id="chrisFavCount">0</span></div>
+        <div class="mb-6">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">🏆 Current Standings 🏆</h2>
+            <div id="dynamicStandings" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Standings will be dynamically generated -->
             </div>
         </div>
 
@@ -144,6 +146,7 @@
         let isAdminMode = false;
         let trendChart, favBackerChart;
         let pusher, channel;
+        let previousPositions = {}; // Track position changes
 
         // Dark mode detection
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -593,6 +596,10 @@
         }
 
         function updateTotals() {
+            updateDynamicStandings();
+        }
+
+        function updateDynamicStandings() {
             let eggmanTotal = 0, georgeTotal = 0, chrisTotal = 0;
             let eggmanFavCount = 0, georgeFavCount = 0, chrisFavCount = 0;
             
@@ -605,14 +612,135 @@
                 if (round.george.favBacker) georgeFavCount++;
                 if (round.chris.favBacker) chrisFavCount++;
             });
-            
-            document.getElementById('eggmanTotal').textContent = eggmanTotal;
-            document.getElementById('georgeTotal').textContent = georgeTotal;
-            document.getElementById('chrisTotal').textContent = chrisTotal;
-            
-            document.getElementById('eggmanFavCount').textContent = eggmanFavCount;
-            document.getElementById('georgeFavCount').textContent = georgeFavCount;
-            document.getElementById('chrisFavCount').textContent = chrisFavCount;
+
+            // Create players array with totals and sort by score
+            const players = [
+                { 
+                    name: 'Eggman', 
+                    key: 'eggman',
+                    total: eggmanTotal, 
+                    favCount: eggmanFavCount,
+                    color: { primary: '#3B82F6', secondary: '#60A5FA' },
+                    gradientFrom: 'from-blue-50',
+                    gradientTo: 'to-blue-100',
+                    gradientFromDark: 'dark:from-blue-900/30',
+                    gradientToDark: 'dark:to-blue-800/30',
+                    textColor: 'text-blue-600 dark:text-blue-400',
+                    secondaryTextColor: 'text-blue-500 dark:text-blue-300'
+                },
+                { 
+                    name: 'George', 
+                    key: 'george',
+                    total: georgeTotal, 
+                    favCount: georgeFavCount,
+                    color: { primary: '#10B981', secondary: '#34D399' },
+                    gradientFrom: 'from-green-50',
+                    gradientTo: 'to-green-100',
+                    gradientFromDark: 'dark:from-green-900/30',
+                    gradientToDark: 'dark:to-green-800/30',
+                    textColor: 'text-green-600 dark:text-green-400',
+                    secondaryTextColor: 'text-green-500 dark:text-green-300'
+                },
+                { 
+                    name: 'Chris', 
+                    key: 'chris',
+                    total: chrisTotal, 
+                    favCount: chrisFavCount,
+                    color: { primary: '#8B5CF6', secondary: '#A78BFA' },
+                    gradientFrom: 'from-purple-50',
+                    gradientTo: 'to-purple-100',
+                    gradientFromDark: 'dark:from-purple-900/30',
+                    gradientToDark: 'dark:to-purple-800/30',
+                    textColor: 'text-purple-600 dark:text-purple-400',
+                    secondaryTextColor: 'text-purple-500 dark:text-purple-300'
+                }
+            ];
+
+            // Sort players by total score (descending)
+            players.sort((a, b) => b.total - a.total);
+
+            // Calculate position changes
+            const currentPositions = {};
+            players.forEach((player, index) => {
+                currentPositions[player.key] = index + 1;
+            });
+
+            const standingsContainer = document.getElementById('dynamicStandings');
+            standingsContainer.innerHTML = '';
+
+            players.forEach((player, index) => {
+                const position = index + 1;
+                const previousPosition = previousPositions[player.key] || position;
+                const positionChange = previousPosition - position;
+
+                // Generate position indicator and medal
+                let positionIndicator = '';
+                let medal = '';
+                let specialAnimation = '';
+
+                if (position === 1) {
+                    medal = '<span class="text-2xl animate-bounce-slow">🥇</span>';
+                    specialAnimation = 'animate-pulse-slow';
+                } else if (position === 2) {
+                    medal = '<span class="text-2xl">🥈</span>';
+                } else if (position === 3) {
+                    medal = '<span class="text-2xl">🥉</span>';
+                }
+
+                // Position change arrows
+                if (positionChange > 0) {
+                    positionIndicator = `<span class="inline-flex items-center text-green-500 text-sm font-medium animate-bounce">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        +${positionChange}
+                    </span>`;
+                } else if (positionChange < 0) {
+                    positionIndicator = `<span class="inline-flex items-center text-red-500 text-sm font-medium">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        ${positionChange}
+                    </span>`;
+                } else if (previousPositions[player.key] !== undefined) {
+                    positionIndicator = `<span class="inline-flex items-center text-gray-500 text-sm font-medium">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        -
+                    </span>`;
+                }
+
+                // Create the standings card
+                const card = document.createElement('div');
+                card.className = `bg-gradient-to-br ${player.gradientFrom} ${player.gradientTo} ${player.gradientFromDark} ${player.gradientToDark} p-4 rounded-lg transform transition-all duration-500 hover:scale-105 ${specialAnimation}`;
+                
+                // Add special border for leader
+                if (position === 1) {
+                    card.className += ' ring-2 ring-yellow-400 dark:ring-yellow-300 shadow-lg';
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-lg font-bold ${player.textColor}">#{position}</span>
+                            ${medal}
+                        </div>
+                        ${positionIndicator}
+                    </div>
+                    <div class="text-3xl font-bold ${player.textColor} mb-1">${player.total}</div>
+                    <div class="text-sm ${player.textColor} font-medium">${player.name}</div>
+                    <div class="text-xs ${player.secondaryTextColor} mt-2 flex items-center justify-between">
+                        <span>Fav Backer: ${player.favCount}</span>
+                        ${position === 1 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">👑 LEADER</span>' : ''}
+                    </div>
+                `;
+
+                standingsContainer.appendChild(card);
+            });
+
+            // Update previous positions for next comparison
+            previousPositions = { ...currentPositions };
         }
 
         function initCharts() {
