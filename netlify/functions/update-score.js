@@ -4,8 +4,8 @@ let latestScore = {};
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID || '2021934',
-  key: process.env.PUSHER_KEY || '34c3cbec9bc210bcb8c0',
-  secret: process.env.PUSHER_SECRET || 'bf7971377aae56741385',
+  key: process.env.PUSHER_KEY || '',
+  secret: process.env.PUSHER_SECRET || '',
   cluster: process.env.PUSHER_CLUSTER || 'eu',
   useTLS: true
 });
