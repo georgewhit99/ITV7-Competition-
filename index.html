@@ -66,7 +66,7 @@ G <!DOCTYPE html>
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 text-sm">
                 <div class="flex items-center"><span class="w-2 h-2 bg-green-500 rounded-full mr-2"></span>Win: 3 points</div>
                 <div class="flex items-center"><span class="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>Place: 1 point</div>
-                <div class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Highest Odds: 5 points</div>
+                <div class="flex items-center"><span class="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>Highest Odds: 5 points/ 3 points if shared</div>
 
             </div>
         </div>
@@ -433,7 +433,7 @@ G <!DOCTYPE html>
             const place = parseInt(player.place) || 0;
             const highestOdds = parseInt(player.highestOdds) || 0;
             const bonus = parseInt(player.bonus) || 0;
-            return (win * 3) + (place * 1) + (highestOdds * 5) + bonus;
+            return (win * 3) + (place * 1) + (highestOdds * 1) + bonus;
         }
 
         function updateRoundData(roundIndex, player, field, value) {
