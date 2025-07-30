@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+G <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -888,8 +888,8 @@
                 }
 
                 const leaderBadge = position === 1 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">👑 LEADER</span>' : '';
-const tequilaBadge = position === 2 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">🥃 </span>' : '';
-const tequilathirdBadge = position === 3 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">🥃🥃</span>' : '';
+                const tequilaBadge = position === 2 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">🥃" " </span>' : '';
+                const tequilathirdBadge = position === 3 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">🥃🥃 LOSER</span>' : '';
 
                 card.innerHTML = 
                     '<div class="flex items-center justify-between mb-3">' +
@@ -902,7 +902,7 @@ const tequilathirdBadge = position === 3 ? '<span class="text-yellow-600 dark:te
                     '<div class="text-3xl font-bold ' + player.textColor + ' mb-2">' + player.total + '</div>' +
                     '<div class="text-xs ' + player.secondaryTextColor + ' flex items-center justify-between">' +
                         '<span>Fav Backer: ' + player.favCount + '</span>' +
-                        leaderBadge +
+                        leaderBadge + tequilaBadge + tequilathirdBadge +
                     '</div>';
 
                 standingsContainer.appendChild(card);
