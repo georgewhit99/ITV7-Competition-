@@ -1,9 +1,11 @@
+// package.json
 {
   "name": "netlify-functions",
   "version": "1.0.0",
   "description": "Netlify functions for score tracker",
   "main": "index.js",
   "dependencies": {
-    "pusher": "^5.0.1"
+    "pusher": "^5.0.1",
+    "axios": "^0.27.2"
   }
 }
