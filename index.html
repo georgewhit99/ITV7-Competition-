@@ -1,4 +1,4 @@
-G<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -947,18 +947,6 @@ G<!DOCTYPE html>
             initPusher();
             loadInitialData();
         });
-        
-        fetch('/.netlify/functions/get-score')
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("teamA-score").textContent = data.teamA;
-    document.getElementById("teamB-score").textContent = data.teamB;
-  });
-
-fetch('/.netlify/functions/save-score', {
-  method: "POST",
-  body: JSON.stringify({ teamA: 1, teamB: 2 }) // use real score values
-});
     </script>
 </body>
 </html>
