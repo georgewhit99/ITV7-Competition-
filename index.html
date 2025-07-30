@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+G <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -89,6 +89,21 @@
             </button>
         </div>
 
+        <!-- Rounds Controls -->
+        <div class="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="text-sm text-gray-600 dark:text-gray-400">
+                <span id="roundsInfo">Showing 1 of ${rounds.length} rounds</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="expandAllRounds()" class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors">
+                    Expand All
+                </button>
+                <button onclick="collapseAllRounds()" class="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded transition-colors">
+                    Collapse All
+                </button>
+            </div>
+        </div>
+
         <!-- Score Table - Mobile Optimized -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden mb-6">
             <!-- Desktop Table -->
@@ -145,6 +160,7 @@
         let trendChart, favBackerChart;
         let pusher, channel;
         let previousPositions = {}; // Track position changes
+        let collapsedRounds = new Set(); // Track which rounds are collapsed
 
         // Dark mode detection
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -183,9 +199,11 @@
                 channel.bind('score-updated', function(data) {
                     if (data.scoreData && data.scoreData.rounds) {
                         rounds = data.scoreData.rounds;
+                        initializeCollapsedState();
                         updateTable();
                         updateTotals();
                         updateCharts();
+                        updateRoundsInfo();
                     }
                 });
             } catch (error) {
@@ -224,13 +242,62 @@
                 const data = await response.json();
                 if (data.scoreData && data.scoreData.rounds) {
                     rounds = data.scoreData.rounds;
+                    initializeCollapsedState();
                     updateTable();
                     updateTotals();
                     updateCharts();
+                    updateRoundsInfo();
                 }
             } catch (error) {
                 console.error('Failed to load initial data:', error);
             }
+        }
+
+        // Initialize collapsed state - show only the first round
+        function initializeCollapsedState() {
+            collapsedRounds.clear();
+            rounds.forEach((round, index) => {
+                if (index > 0) { // Collapse all rounds except the first one
+                    collapsedRounds.add(index);
+                }
+            });
+        }
+
+        // Toggle round visibility
+        function toggleRound(roundIndex) {
+            if (collapsedRounds.has(roundIndex)) {
+                collapsedRounds.delete(roundIndex);
+            } else {
+                collapsedRounds.add(roundIndex);
+            }
+            updateTable();
+            updateRoundsInfo();
+        }
+
+        // Expand all rounds
+        function expandAllRounds() {
+            collapsedRounds.clear();
+            updateTable();
+            updateRoundsInfo();
+        }
+
+        // Collapse all rounds except the first
+        function collapseAllRounds() {
+            collapsedRounds.clear();
+            rounds.forEach((round, index) => {
+                if (index > 0) {
+                    collapsedRounds.add(index);
+                }
+            });
+            updateTable();
+            updateRoundsInfo();
+        }
+
+        // Update rounds info
+        function updateRoundsInfo() {
+            const visibleRounds = rounds.length - collapsedRounds.size;
+            const totalRounds = rounds.length;
+            document.getElementById('roundsInfo').textContent = `Showing ${visibleRounds} of ${totalRounds} rounds`;
         }
 
         // Send score update to backend
@@ -349,9 +416,15 @@
             };
             
             rounds.unshift(newRound);
+            // Don't collapse the newly added round
+            const newCollapsedRounds = new Set();
+            collapsedRounds.forEach(index => newCollapsedRounds.add(index + 1));
+            collapsedRounds = newCollapsedRounds;
+            
             updateTable();
             updateTotals();
             updateCharts();
+            updateRoundsInfo();
             sendScoreUpdate();
         }
 
@@ -501,21 +574,55 @@
             tbody.innerHTML = '';
             
             rounds.forEach((round, index) => {
-                const row = document.createElement('tr');
-                row.className = 'border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700';
+                const isCollapsed = collapsedRounds.has(index);
+                
+                // Create header row with round info and toggle button
+                const headerRow = document.createElement('tr');
+                headerRow.className = 'bg-gray-50 dark:bg-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors';
+                headerRow.onclick = () => toggleRound(index);
                 
                 const eggmanTotal = calculateRoundTotal(round.eggman);
                 const georgeTotal = calculateRoundTotal(round.george);
                 const chrisTotal = calculateRoundTotal(round.chris);
                 
-                row.innerHTML = `
-                    <td class="px-2 py-3 font-medium">${round.round}</td>
-                    ${createPlayerCells('eggman', round.eggman, index, eggmanTotal)}
-                    ${createPlayerCells('george', round.george, index, georgeTotal)}
-                    ${createPlayerCells('chris', round.chris, index, chrisTotal)}
+                const expandIcon = isCollapsed ? 
+                    '<svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>' :
+                    '<svg class="w-4 h-4 transform transition-transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
+                
+                headerRow.innerHTML = `
+                    <td class="px-2 py-3 font-medium">
+                        <div class="flex items-center gap-2">
+                            ${expandIcon}
+                            Round ${round.round}
+                        </div>
+                    </td>
+                    <td colspan="6" class="px-2 py-3 text-center font-medium border-l border-gray-200 dark:border-gray-600">
+                        Total: ${eggmanTotal}
+                    </td>
+                    <td colspan="6" class="px-2 py-3 text-center font-medium border-l border-gray-200 dark:border-gray-600">
+                        Total: ${georgeTotal}
+                    </td>
+                    <td colspan="6" class="px-2 py-3 text-center font-medium border-l border-gray-200 dark:border-gray-600">
+                        Total: ${chrisTotal}
+                    </td>
                 `;
                 
-                tbody.appendChild(row);
+                tbody.appendChild(headerRow);
+                
+                // Add detail row if not collapsed
+                if (!isCollapsed) {
+                    const detailRow = document.createElement('tr');
+                    detailRow.className = 'border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700';
+                    
+                    detailRow.innerHTML = `
+                        <td class="px-2 py-3"></td>
+                        ${createPlayerCells('eggman', round.eggman, index, eggmanTotal)}
+                        ${createPlayerCells('george', round.george, index, georgeTotal)}
+                        ${createPlayerCells('chris', round.chris, index, chrisTotal)}
+                    `;
+                    
+                    tbody.appendChild(detailRow);
+                }
             });
         }
 
@@ -524,22 +631,43 @@
             container.innerHTML = '';
             
             rounds.forEach((round, index) => {
+                const isCollapsed = collapsedRounds.has(index);
                 const card = document.createElement('div');
-                card.className = 'p-4 border-b border-gray-200 dark:border-gray-600';
+                card.className = 'border-b border-gray-200 dark:border-gray-600';
                 
                 const eggmanTotal = calculateRoundTotal(round.eggman);
                 const georgeTotal = calculateRoundTotal(round.george);
                 const chrisTotal = calculateRoundTotal(round.chris);
                 
-                card.innerHTML = `
-                    <div class="font-semibold text-lg mb-3 text-center">Round ${round.round}</div>
-                    <div class="space-y-4">
-                        ${createMobilePlayerCard('Eggman', 'eggman', round.eggman, index, eggmanTotal, '#3B82F6')}
-                        ${createMobilePlayerCard('George 👑', 'george', round.george, index, georgeTotal, '#10B981')}
-                        ${createMobilePlayerCard('Chris', 'chris', round.chris, index, chrisTotal, '#8B5CF6')}
+                const expandIcon = isCollapsed ? 
+                    '<svg class="w-5 h-5 transform transition-transform text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>' :
+                    '<svg class="w-5 h-5 transform transition-transform rotate-90 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
+                
+                const headerContent = `
+                    <div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" onclick="toggleRound(${index})">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                ${expandIcon}
+                                <span class="font-semibold text-lg">Round ${round.round}</span>
+                            </div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                E:${eggmanTotal} | G:${georgeTotal} | C:${chrisTotal}
+                            </div>
+                        </div>
                     </div>
                 `;
                 
+                const detailContent = isCollapsed ? '' : `
+                    <div class="px-4 pb-4">
+                        <div class="space-y-4">
+                            ${createMobilePlayerCard('Eggman', 'eggman', round.eggman, index, eggmanTotal, '#3B82F6')}
+                            ${createMobilePlayerCard('George 👑', 'george', round.george, index, georgeTotal, '#10B981')}
+                            ${createMobilePlayerCard('Chris', 'chris', round.chris, index, chrisTotal, '#8B5CF6')}
+                        </div>
+                    </div>
+                `;
+                
+                card.innerHTML = headerContent + detailContent;
                 container.appendChild(card);
             });
         }
