@@ -1,3 +1,5 @@
+G
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -610,15 +612,21 @@
                 { label: 'Last 15 Rounds', rounds: 15, icon: '📊' }
             ];
             
-            let tableHTML = `
-                <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 flex-1">
+            let mobileHTML = `
+                <!-- Mobile Layout -->
+                <div class="block sm:hidden space-y-4 flex-1">
+            `;
+            
+            let desktopHTML = `
+                <!-- Desktop Layout -->
+                <div class="hidden sm:block overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 flex-1">
                     <table class="w-full text-sm">
                         <thead class="bg-gradient-to-r from-primary to-purple-600 text-white">
                             <tr>
-                                <th class="px-4 py-3 text-left font-semibold">Period</th>
-                                <th class="px-4 py-3 text-center font-semibold">Eggman</th>
-                                <th class="px-4 py-3 text-center font-semibold">George</th>
-                                <th class="px-4 py-3 text-center font-semibold">Chris</th>
+                                <th class="px-3 py-2 text-left font-semibold text-xs">Period</th>
+                                <th class="px-2 py-2 text-center font-semibold text-xs">Eggman</th>
+                                <th class="px-2 py-2 text-center font-semibold text-xs">George</th>
+                                <th class="px-2 py-2 text-center font-semibold text-xs">Chris</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -639,56 +647,82 @@
                 scores.sort((a, b) => b.score - a.score);
                 const topPlayer = scores[0].player;
                 
-                const isDataAvailable = averages.actualRounds >= Math.min(period.rounds, rounds.length);
+                // Mobile card for each period
+                mobileHTML += `
+                    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="text-xl">${period.icon}</span>
+                            <div>
+                                <div class="font-semibold text-gray-900 dark:text-gray-100">${period.label}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                    ${averages.actualRounds} of ${period.rounds} rounds
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="text-center">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Eggman</div>
+                                <div class="text-lg font-bold ${topPlayer === 'eggman' ? 'text-blue-600 dark:text-blue-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.eggman}</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">George</div>
+                                <div class="text-lg font-bold ${topPlayer === 'george' ? 'text-green-600 dark:text-green-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.george}</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Chris</div>
+                                <div class="text-lg font-bold ${topPlayer === 'chris' ? 'text-purple-600 dark:text-purple-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.chris}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
                 
-                tableHTML += `
+                // Desktop table row
+                desktopHTML += `
                     <tr class="${rowClass} hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors">
-                        <td class="px-4 py-4 font-medium text-gray-900 dark:text-gray-100">
+                        <td class="px-3 py-3 font-medium text-gray-900 dark:text-gray-100">
                             <div class="flex items-center gap-2">
-                                <span class="text-lg">${period.icon}</span>
+                                <span class="text-base">${period.icon}</span>
                                 <div>
-                                    <div>${period.label}</div>
+                                    <div class="text-sm">${period.label}</div>
                                     <div class="text-xs text-gray-500 dark:text-gray-400">
                                         ${averages.actualRounds} of ${period.rounds} rounds
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        <td class="px-4 py-4 text-center">
-                            <div class="flex flex-col items-center">
-                                <span class="text-lg font-bold ${topPlayer === 'eggman' ? 'text-blue-600 dark:text-blue-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.eggman}</span>
-                                ${topPlayer === 'eggman' && isDataAvailable ? '<span class="text-xs text-yellow-500">👑</span>' : ''}
-                            </div>
+                        <td class="px-2 py-3 text-center">
+                            <span class="text-lg font-bold ${topPlayer === 'eggman' ? 'text-blue-600 dark:text-blue-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.eggman}</span>
                         </td>
-                        <td class="px-4 py-4 text-center">
-                            <div class="flex flex-col items-center">
-                                <span class="text-lg font-bold ${topPlayer === 'george' ? 'text-green-600 dark:text-green-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.george}</span>
-                                ${topPlayer === 'george' && isDataAvailable ? '<span class="text-xs text-yellow-500">👑</span>' : ''}
-                            </div>
+                        <td class="px-2 py-3 text-center">
+                            <span class="text-lg font-bold ${topPlayer === 'george' ? 'text-green-600 dark:text-green-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.george}</span>
                         </td>
-                        <td class="px-4 py-4 text-center">
-                            <div class="flex flex-col items-center">
-                                <span class="text-lg font-bold ${topPlayer === 'chris' ? 'text-purple-600 dark:text-purple-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.chris}</span>
-                                ${topPlayer === 'chris' && isDataAvailable ? '<span class="text-xs text-yellow-500">👑</span>' : ''}
-                            </div>
+                        <td class="px-2 py-3 text-center">
+                            <span class="text-lg font-bold ${topPlayer === 'chris' ? 'text-purple-600 dark:text-purple-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.chris}</span>
                         </td>
                     </tr>
                 `;
             });
             
-            tableHTML += `
+            mobileHTML += `
+                </div>
+            `;
+            
+            desktopHTML += `
                         </tbody>
                     </table>
                 </div>
-                <div class="mt-4 text-xs text-gray-500 dark:text-gray-400 text-center">
+            `;
+            
+            const finalHTML = mobileHTML + desktopHTML + `
+                <div class="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
                     <div class="flex items-center justify-center gap-2">
-                        <span class="text-yellow-500">👑</span>
-                        <span>Highest average for period</span>
+                        <span class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></span>
+                        <span>Glowing numbers indicate highest average for that period</span>
                     </div>
                 </div>
             `;
             
-            tableContainer.innerHTML = tableHTML;
+            tableContainer.innerHTML = finalHTML;
         }
 
         function updateTable() {
