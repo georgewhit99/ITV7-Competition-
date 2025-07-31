@@ -1,4 +1,4 @@
-G <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,11 +20,16 @@ G <!DOCTYPE html>
                         'bounce-slow': 'bounce 2s infinite',
                         'pulse-slow': 'pulse 3s infinite',
                         'wiggle': 'wiggle 1s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
                     },
                     keyframes: {
                         wiggle: {
                             '0%, 100%': { transform: 'rotate(-3deg)' },
                             '50%': { transform: 'rotate(3deg)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 5px rgba(93, 92, 222, 0.5)' },
+                            'to': { boxShadow: '0 0 20px rgba(93, 92, 222, 0.8)' }
                         }
                     }
                 }
@@ -505,7 +510,7 @@ G <!DOCTYPE html>
                     
                     <!-- Modal Content -->
                     <div class="flex-1 overflow-auto p-4 sm:p-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 h-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 h-full">
                             <!-- Cumulative Score Trend -->
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
                                 <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Cumulative Score Trend</h3>
@@ -519,6 +524,14 @@ G <!DOCTYPE html>
                                 <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Fav Backer Count</h3>
                                 <div class="relative h-64 sm:h-80">
                                     <canvas id="favBackerChart" class="w-full h-full"></canvas>
+                                </div>
+                            </div>
+                            
+                            <!-- Average Scores Table -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2 xl:col-span-1">
+                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Average Scores by Period</h3>
+                                <div id="averageScoresTable" class="h-full flex flex-col">
+                                    <!-- Table will be populated here -->
                                 </div>
                             </div>
                         </div>
@@ -540,12 +553,13 @@ G <!DOCTYPE html>
             // Close modal with escape key
             document.addEventListener('keydown', handleEscapeKey);
             
-            // Initialize charts if they haven't been created yet
+            // Initialize charts and table if they haven't been created yet
             setTimeout(() => {
                 if (!trendChart || !favBackerChart) {
                     initCharts();
                 }
                 updateCharts();
+                updateAverageScoresTable();
             }, 100);
         }
 
@@ -562,6 +576,119 @@ G <!DOCTYPE html>
             if (e.key === 'Escape') {
                 closeChartsModal();
             }
+        }
+
+        // Calculate average scores for given number of recent rounds
+        function calculateAverageScores(numRounds) {
+            if (rounds.length === 0) return { eggman: 0, george: 0, chris: 0 };
+            
+            const recentRounds = rounds.slice(0, Math.min(numRounds, rounds.length));
+            let eggmanTotal = 0, georgeTotal = 0, chrisTotal = 0;
+            
+            recentRounds.forEach(round => {
+                eggmanTotal += calculateRoundTotal(round.eggman);
+                georgeTotal += calculateRoundTotal(round.george);
+                chrisTotal += calculateRoundTotal(round.chris);
+            });
+            
+            const actualRounds = recentRounds.length;
+            return {
+                eggman: actualRounds > 0 ? (eggmanTotal / actualRounds).toFixed(1) : 0,
+                george: actualRounds > 0 ? (georgeTotal / actualRounds).toFixed(1) : 0,
+                chris: actualRounds > 0 ? (chrisTotal / actualRounds).toFixed(1) : 0,
+                actualRounds: actualRounds
+            };
+        }
+
+        function updateAverageScoresTable() {
+            const tableContainer = document.getElementById('averageScoresTable');
+            if (!tableContainer) return;
+            
+            const periods = [
+                { label: 'Last 3 Rounds', rounds: 3, icon: '🔥' },
+                { label: 'Last 8 Rounds', rounds: 8, icon: '📈' },
+                { label: 'Last 15 Rounds', rounds: 15, icon: '📊' }
+            ];
+            
+            let tableHTML = `
+                <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 flex-1">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gradient-to-r from-primary to-purple-600 text-white">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-semibold">Period</th>
+                                <th class="px-4 py-3 text-center font-semibold">Eggman</th>
+                                <th class="px-4 py-3 text-center font-semibold">George</th>
+                                <th class="px-4 py-3 text-center font-semibold">Chris</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            periods.forEach((period, index) => {
+                const averages = calculateAverageScores(period.rounds);
+                const rowClass = index % 2 === 0 
+                    ? 'bg-white dark:bg-gray-800' 
+                    : 'bg-gray-50 dark:bg-gray-750';
+                
+                // Find highest average for this period
+                const scores = [
+                    { player: 'eggman', score: parseFloat(averages.eggman) },
+                    { player: 'george', score: parseFloat(averages.george) },
+                    { player: 'chris', score: parseFloat(averages.chris) }
+                ];
+                scores.sort((a, b) => b.score - a.score);
+                const topPlayer = scores[0].player;
+                
+                const isDataAvailable = averages.actualRounds >= Math.min(period.rounds, rounds.length);
+                
+                tableHTML += `
+                    <tr class="${rowClass} hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors">
+                        <td class="px-4 py-4 font-medium text-gray-900 dark:text-gray-100">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">${period.icon}</span>
+                                <div>
+                                    <div>${period.label}</div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">
+                                        ${averages.actualRounds} of ${period.rounds} rounds
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center">
+                                <span class="text-lg font-bold ${topPlayer === 'eggman' ? 'text-blue-600 dark:text-blue-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.eggman}</span>
+                                ${topPlayer === 'eggman' && isDataAvailable ? '<span class="text-xs text-yellow-500">👑</span>' : ''}
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center">
+                                <span class="text-lg font-bold ${topPlayer === 'george' ? 'text-green-600 dark:text-green-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.george}</span>
+                                ${topPlayer === 'george' && isDataAvailable ? '<span class="text-xs text-yellow-500">👑</span>' : ''}
+                            </div>
+                        </td>
+                        <td class="px-4 py-4 text-center">
+                            <div class="flex flex-col items-center">
+                                <span class="text-lg font-bold ${topPlayer === 'chris' ? 'text-purple-600 dark:text-purple-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.chris}</span>
+                                ${topPlayer === 'chris' && isDataAvailable ? '<span class="text-xs text-yellow-500">👑</span>' : ''}
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+                <div class="mt-4 text-xs text-gray-500 dark:text-gray-400 text-center">
+                    <div class="flex items-center justify-center gap-2">
+                        <span class="text-yellow-500">👑</span>
+                        <span>Highest average for period</span>
+                    </div>
+                </div>
+            `;
+            
+            tableContainer.innerHTML = tableHTML;
         }
 
         function updateTable() {
@@ -1070,6 +1197,9 @@ G <!DOCTYPE html>
             
             trendChart.update();
             favBackerChart.update();
+
+            // Update average scores table
+            updateAverageScoresTable();
         }
 
         // Initialize everything
