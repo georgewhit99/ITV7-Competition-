@@ -77,6 +77,107 @@
         <div class="goose">🐎</div>
         <div class="speech-bubble">Watersmeet!</div>
     </div>
+     <style>
+     /* Animated Goose */
+        .animated-goose-container {
+            position: fixed;
+            top: 80px;
+            left: -100px;
+            z-index: 9999;
+            pointer-events: none;
+            animation: gooseWalk 8s ease-in-out forwards;
+        }
+
+        .goose {
+            font-size: 3rem;
+            animation: gooseBob 0.5s ease-in-out infinite;
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: -40px;
+            left: 60px;
+            background: white;
+            color: #2d2320;
+            padding: 0.75rem 1.25rem;
+            border-radius: 1.25rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            animation: honkAppear 1s ease-in-out 2s forwards;
+            white-space: nowrap;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid white;
+        }
+
+        @keyframes gooseWalk {
+            0% {
+                left: -100px;
+            }
+            40% {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            60% {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            100% {
+                left: calc(100% + 100px);
+            }
+        }
+
+        @keyframes gooseBob {
+            0%, 100% {
+                transform: translateY(0) rotate(-5deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+        }
+
+        @keyframes honkAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            40% {
+                transform: scale(1);
+            }
+            80% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+
+        .dark .speech-bubble {
+            background: var(--color-surface);
+            color: var(--color-text);
+        }
+
+        .dark .speech-bubble::after {
+            border-top-color: var(--color-surface);
+        }
+    </style>
 
         <!-- Scoring Rules -->
         <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-6">
