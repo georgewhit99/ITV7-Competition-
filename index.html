@@ -1420,34 +1420,34 @@
 
         // Convert a probability (0-1) to simplified fractional odds string
         function toFractionalOdds(prob) {
-            if (prob <= 0) return '∞/1';
-            if (prob >= 1) return '1/1';
-            // Fractional odds = (1 - p) / p  expressed as a/b
+            if (prob <= 0) return '999/1';
+            if (prob >= 1) return 'Evens';
+            // Fractional odds = (1 - p) / p
             const decimalOdds = (1 - prob) / prob;
-            // Find the best fraction approximation
-            let bestNum = Math.round(decimalOdds);
-            let bestDen = 1;
-            let bestErr = Math.abs(decimalOdds - bestNum);
-            for (let d = 1; d <= 100; d++) {
-                const n = Math.round(decimalOdds * d);
-                if (n < 1 && d === 1) continue;
+            if (Math.abs(decimalOdds - 1) < 0.05) return 'Evens';
+
+            // Common bookmaker fractions to snap to
+            const commonFracs = [
+                [1,100],[1,50],[1,33],[1,25],[1,20],[1,16],[1,14],[1,12],[1,10],[1,8],[1,7],
+                [1,6],[1,5],[2,9],[1,4],[2,7],[1,3],[4,11],[2,5],[4,9],[1,2],[8,15],
+                [4,7],[8,13],[4,6],[8,11],[4,5],[5,6],[10,11],[1,1],
+                [11,10],[6,5],[5,4],[11,8],[6,4],[13,8],[7,4],[15,8],[2,1],
+                [9,4],[5,2],[11,4],[3,1],[7,2],[4,1],[9,2],[5,1],[6,1],[7,1],[8,1],
+                [9,1],[10,1],[11,1],[12,1],[14,1],[16,1],[18,1],[20,1],[22,1],[25,1],
+                [28,1],[33,1],[40,1],[50,1],[66,1],[80,1],[100,1],[150,1],[200,1],
+                [250,1],[300,1],[500,1],[999,1]
+            ];
+
+            let bestFrac = [1,1];
+            let bestErr = Infinity;
+            for (const [n, d] of commonFracs) {
                 const err = Math.abs(decimalOdds - n / d);
-                // Prefer simpler fractions (smaller denominator) unless much more accurate
-                if (err < bestErr - 0.01 || (err <= bestErr + 0.005 && d < bestDen)) {
-                    bestNum = n;
-                    bestDen = d;
+                if (err < bestErr) {
                     bestErr = err;
-                    if (err < 0.005) break;
+                    bestFrac = [n, d];
                 }
             }
-            // Simplify with GCD
-            function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
-            const g = gcd(Math.abs(bestNum), Math.abs(bestDen));
-            const fn = bestNum / g;
-            const fd = bestDen / g;
-            if (fn <= 0) return 'Evens';
-            if (fn === fd) return 'Evens';
-            return fn + '/' + fd;
+            return bestFrac[0] + '/' + bestFrac[1];
         }
 
         // Calculate win probabilities for all players using Monte Carlo
@@ -1472,16 +1472,23 @@
 
             // If no rounds played yet, return equal chances
             if (numPlayed === 0) {
-                return { eggman: 1/3, george: 1/3, chris: 1/3 };
+                return {
+                    win: { eggman: 1/3, george: 1/3, chris: 1/3 },
+                    last: { eggman: 1/3, george: 1/3, chris: 1/3 }
+                };
             }
 
-            // If all rounds played (no remaining), winner is deterministic
+            // If all rounds played (no remaining), winner/loser is deterministic
             if (remaining === 0) {
                 const max = Math.max(totals.eggman, totals.george, totals.chris);
+                const min = Math.min(totals.eggman, totals.george, totals.chris);
                 const winners = ['eggman', 'george', 'chris'].filter(k => totals[k] === max);
-                const result = { eggman: 0, george: 0, chris: 0 };
-                winners.forEach(w => { result[w] = 1 / winners.length; });
-                return result;
+                const losers = ['eggman', 'george', 'chris'].filter(k => totals[k] === min);
+                const winResult = { eggman: 0, george: 0, chris: 0 };
+                const lastResult = { eggman: 0, george: 0, chris: 0 };
+                winners.forEach(w => { winResult[w] = 1 / winners.length; });
+                losers.forEach(l => { lastResult[l] = 1 / losers.length; });
+                return { win: winResult, last: lastResult };
             }
 
             // Compute mean & std dev per player per round
@@ -1509,6 +1516,7 @@
 
             // Monte Carlo simulation
             const wins = { eggman: 0, george: 0, chris: 0 };
+            const lasts = { eggman: 0, george: 0, chris: 0 };
             const keys = ['eggman', 'george', 'chris'];
 
             for (let sim = 0; sim < SIM_COUNT; sim++) {
@@ -1526,12 +1534,24 @@
                 const maxScore = Math.max(projected.eggman, projected.george, projected.chris);
                 const simWinners = keys.filter(k => Math.abs(projected[k] - maxScore) < 0.001);
                 simWinners.forEach(w => { wins[w] += 1 / simWinners.length; });
+
+                // Find last place(s)
+                const minScore = Math.min(projected.eggman, projected.george, projected.chris);
+                const simLosers = keys.filter(k => Math.abs(projected[k] - minScore) < 0.001);
+                simLosers.forEach(l => { lasts[l] += 1 / simLosers.length; });
             }
 
             return {
-                eggman: wins.eggman / SIM_COUNT,
-                george: wins.george / SIM_COUNT,
-                chris: wins.chris / SIM_COUNT
+                win: {
+                    eggman: wins.eggman / SIM_COUNT,
+                    george: wins.george / SIM_COUNT,
+                    chris: wins.chris / SIM_COUNT
+                },
+                last: {
+                    eggman: lasts.eggman / SIM_COUNT,
+                    george: lasts.george / SIM_COUNT,
+                    chris: lasts.chris / SIM_COUNT
+                }
             };
         }
 
@@ -1595,8 +1615,10 @@
             // Sort players by total score (descending)
             players.sort((a, b) => b.total - a.total);
 
-            // Calculate win probabilities for odds display
-            const winProbs = calculateWinProbabilities();
+            // Calculate win/last probabilities for odds display
+            const probs = calculateWinProbabilities();
+            const winProbs = probs.win;
+            const lastProbs = probs.last;
 
             // Calculate position changes
             const currentPositions = {};
@@ -1654,11 +1676,9 @@
 
                 // Calculate odds for this player
                 const winProb = winProbs[player.key];
-                const loseProb = 1 - winProb;
+                const lastProb = lastProbs[player.key];
                 const winOddsStr = toFractionalOdds(winProb);
-                const loseOddsStr = toFractionalOdds(loseProb);
-                const winPct = (winProb * 100).toFixed(1);
-                const roundsRemaining = Math.max(0, TOTAL_ROUNDS - rounds.length);
+                const loseOddsStr = toFractionalOdds(lastProb);
 
                 // Create the standings card
                 const card = document.createElement('div');
@@ -1694,19 +1714,14 @@
                             '<div class="font-bold text-green-700 dark:text-green-300 text-sm mt-0.5">' + winOddsStr + '</div>' +
                         '</div>' +
                         '<div class="flex-1 bg-white/50 dark:bg-black/20 rounded-md px-2 py-1.5 text-center">' +
-                            '<div class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider" style="font-size:0.6rem;">To Lose</div>' +
+                            '<div class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider" style="font-size:0.6rem;">To Come Last</div>' +
                             '<div class="font-bold text-red-700 dark:text-red-300 text-sm mt-0.5">' + loseOddsStr + '</div>' +
-                        '</div>' +
-                        '<div class="flex-1 bg-white/50 dark:bg-black/20 rounded-md px-2 py-1.5 text-center">' +
-                            '<div class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider" style="font-size:0.6rem;">Win %</div>' +
-                            '<div class="font-bold ' + player.textColor + ' text-sm mt-0.5">' + winPct + '%</div>' +
                         '</div>' +
                     '</div>' +
                     '<div class="text-xs ' + player.secondaryTextColor + ' flex items-center justify-between">' +
                         '<span>Fav Backer: ' + player.favCount + '</span>' +
                         leaderBadge + tequilaBadge + tequilathirdBadge +
-                    '</div>' +
-                    '<div class="text-xs text-gray-400 dark:text-gray-500 mt-1" style="font-size:0.6rem;">' + roundsRemaining + ' rounds remaining</div>';
+                    '</div>';
 
                 standingsContainer.appendChild(card);
             });
