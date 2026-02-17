@@ -277,7 +277,7 @@
         // Data storage
         let rounds = [];
         let isAdminMode = false;
-        let trendChart, favBackerChart;
+        let trendChart, favBackerChart, oddsHistoryChart;
         let pusher, channel;
         let previousPositions = {}; // Track position changes
         let collapsedRounds = new Set(); // Track which rounds are collapsed
@@ -970,7 +970,7 @@
                     
                     <!-- Modal Content -->
                     <div class="flex-1 overflow-auto p-4 sm:p-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 h-full">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
                             <!-- Cumulative Score Trend -->
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
                                 <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Cumulative Score Trend</h3>
@@ -978,7 +978,7 @@
                                     <canvas id="trendChart" class="w-full h-full"></canvas>
                                 </div>
                             </div>
-                            
+
                             <!-- Fav Backer Count -->
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
                                 <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Fav Backer Count</h3>
@@ -986,12 +986,34 @@
                                     <canvas id="favBackerChart" class="w-full h-full"></canvas>
                                 </div>
                             </div>
-                            
+
                             <!-- Average Scores Table -->
                             <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2 xl:col-span-1">
                                 <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Average Scores by Period</h3>
                                 <div id="averageScoresTable" class="h-full flex flex-col">
                                     <!-- Table will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Best Odds (Lowest To-Win Odds) -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[250px] lg:col-span-2 xl:col-span-1">
+                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                                    <span>🎯</span> Best Odds to Win
+                                </h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Each player's shortest price (best chance) to win the competition across all rounds</p>
+                                <div id="bestOddsTable">
+                                    <!-- Best odds will be populated here -->
+                                </div>
+                            </div>
+
+                            <!-- Odds History Chart -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2">
+                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 flex items-center gap-2">
+                                    <span>📉</span> Win Odds Over Time
+                                </h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">How each player's odds to win the competition changed after each round (lower = better chance)</p>
+                                <div class="relative h-64 sm:h-80">
+                                    <canvas id="oddsHistoryChart" class="w-full h-full"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -1018,14 +1040,23 @@
                 if (!trendChart || !favBackerChart) {
                     initCharts();
                 }
+                if (!oddsHistoryChart) {
+                    initOddsHistoryChart();
+                }
                 updateCharts();
                 updateAverageScoresTable();
+                updateBestOddsTable();
+                updateOddsHistoryChart();
             }, 100);
         }
 
         function closeChartsModal() {
             const modal = document.getElementById('chartsModal');
             if (modal) {
+                // Destroy charts since their canvas elements are being removed
+                if (trendChart) { trendChart.destroy(); trendChart = null; }
+                if (favBackerChart) { favBackerChart.destroy(); favBackerChart = null; }
+                if (oddsHistoryChart) { oddsHistoryChart.destroy(); oddsHistoryChart = null; }
                 document.body.removeChild(modal);
                 document.body.style.overflow = '';
                 document.removeEventListener('keydown', handleEscapeKey);
@@ -1832,6 +1863,337 @@
             });
         }
 
+        // --- Historical Odds Calculation ---
+        // Calculate win probabilities as if only the first N chronological rounds existed
+        // Uses a reduced simulation count for performance when computing many historical points
+        function calculateWinProbabilitiesForSubset(roundSubset, simCount) {
+            const numPlayed = roundSubset.length;
+            const remaining = Math.max(0, TOTAL_ROUNDS - numPlayed);
+
+            const totals = { eggman: 0, george: 0, chris: 0 };
+            const perRound = { eggman: [], george: [], chris: [] };
+
+            roundSubset.forEach(function(round) {
+                var keys = ['eggman', 'george', 'chris'];
+                keys.forEach(function(k) {
+                    var pts = calculateRoundTotal(round[k]);
+                    totals[k] += pts;
+                    perRound[k].push(pts);
+                });
+            });
+
+            if (numPlayed === 0) {
+                return { eggman: 1/3, george: 1/3, chris: 1/3 };
+            }
+
+            if (remaining === 0) {
+                var max = Math.max(totals.eggman, totals.george, totals.chris);
+                var winners = ['eggman', 'george', 'chris'].filter(function(k) { return totals[k] === max; });
+                var result = { eggman: 0, george: 0, chris: 0 };
+                winners.forEach(function(w) { result[w] = 1 / winners.length; });
+                return result;
+            }
+
+            function localStats(arr) {
+                var n = arr.length;
+                var mean = arr.reduce(function(s, v) { return s + v; }, 0) / n;
+                var variance = arr.reduce(function(s, v) { return s + (v - mean) * (v - mean); }, 0) / n;
+                return { mean: mean, std: Math.sqrt(variance) };
+            }
+
+            var playerStats = {};
+            ['eggman', 'george', 'chris'].forEach(function(k) {
+                playerStats[k] = localStats(perRound[k]);
+                if (playerStats[k].std < 1) playerStats[k].std = 1;
+            });
+
+            function randn() {
+                var u = 0, v = 0;
+                while (u === 0) u = Math.random();
+                while (v === 0) v = Math.random();
+                return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+            }
+
+            var wins = { eggman: 0, george: 0, chris: 0 };
+            var keys = ['eggman', 'george', 'chris'];
+
+            for (var sim = 0; sim < simCount; sim++) {
+                var projected = {};
+                keys.forEach(function(k) {
+                    var futureTotal = 0;
+                    for (var r = 0; r < remaining; r++) {
+                        futureTotal += playerStats[k].mean + playerStats[k].std * randn();
+                    }
+                    projected[k] = totals[k] + futureTotal;
+                });
+
+                var maxScore = Math.max(projected.eggman, projected.george, projected.chris);
+                var simWinners = keys.filter(function(k) { return Math.abs(projected[k] - maxScore) < 0.001; });
+                simWinners.forEach(function(w) { wins[w] += 1 / simWinners.length; });
+            }
+
+            return {
+                eggman: wins.eggman / simCount,
+                george: wins.george / simCount,
+                chris: wins.chris / simCount
+            };
+        }
+
+        // Convert probability to decimal odds value for charting
+        // Decimal odds = (1 - p) / p, lower = more likely to win
+        function probToDecimalOdds(p) {
+            if (p <= 0) return 100;
+            if (p >= 1) return 0;
+            return (1 - p) / p;
+        }
+
+        function computeOddsHistory() {
+            if (rounds.length === 0) return { labels: [], eggman: [], george: [], chris: [] };
+
+            var chronological = [].concat(rounds).reverse(); // oldest first
+            var labels = [];
+            var eggmanOdds = [];
+            var georgeOdds = [];
+            var chrisOdds = [];
+
+            // Use fewer sims per historical point for performance (1500 instead of 5000)
+            var simsPerPoint = Math.min(1500, SIM_COUNT);
+
+            for (var i = 1; i <= chronological.length; i++) {
+                var subset = chronological.slice(0, i);
+                var probs = calculateWinProbabilitiesForSubset(subset, simsPerPoint);
+
+                labels.push('R' + i);
+
+                eggmanOdds.push({
+                    decimal: probToDecimalOdds(probs.eggman),
+                    fractional: toFractionalOdds(probs.eggman),
+                    prob: probs.eggman,
+                    round: i
+                });
+                georgeOdds.push({
+                    decimal: probToDecimalOdds(probs.george),
+                    fractional: toFractionalOdds(probs.george),
+                    prob: probs.george,
+                    round: i
+                });
+                chrisOdds.push({
+                    decimal: probToDecimalOdds(probs.chris),
+                    fractional: toFractionalOdds(probs.chris),
+                    prob: probs.chris,
+                    round: i
+                });
+            }
+
+            return {
+                labels: labels,
+                eggman: eggmanOdds,
+                george: georgeOdds,
+                chris: chrisOdds
+            };
+        }
+
+        // Cache odds history to avoid recalculating every update
+        var cachedOddsHistory = null;
+        var cachedOddsRoundsLength = -1;
+
+        function getOddsHistory() {
+            // Recalculate if rounds changed
+            if (rounds.length !== cachedOddsRoundsLength) {
+                cachedOddsHistory = computeOddsHistory();
+                cachedOddsRoundsLength = rounds.length;
+            }
+            return cachedOddsHistory;
+        }
+
+        // Invalidate odds cache when data changes
+        function invalidateOddsCache() {
+            cachedOddsRoundsLength = -1;
+            cachedOddsHistory = null;
+        }
+
+        function updateBestOddsTable() {
+            var container = document.getElementById('bestOddsTable');
+            if (!container) return;
+
+            if (rounds.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 dark:text-gray-400 py-6">No rounds yet</div>';
+                return;
+            }
+
+            var history = getOddsHistory();
+
+            var players = [
+                { name: 'Eggman', key: 'eggman', color: '#3B82F6', bgClass: 'bg-blue-50 dark:bg-blue-900/30', textClass: 'text-blue-600 dark:text-blue-400', borderClass: 'border-blue-200 dark:border-blue-700' },
+                { name: 'George', key: 'george', color: '#10B981', bgClass: 'bg-green-50 dark:bg-green-900/30', textClass: 'text-green-600 dark:text-green-400', borderClass: 'border-green-200 dark:border-green-700' },
+                { name: 'Chris', key: 'chris', color: '#8B5CF6', bgClass: 'bg-purple-50 dark:bg-purple-900/30', textClass: 'text-purple-600 dark:text-purple-400', borderClass: 'border-purple-200 dark:border-purple-700' }
+            ];
+
+            var html = '<div class="space-y-3">';
+
+            players.forEach(function(player) {
+                var oddsArr = history[player.key];
+                if (!oddsArr || oddsArr.length === 0) return;
+
+                // Find the lowest decimal odds (best chance to win)
+                var best = oddsArr[0];
+                for (var i = 1; i < oddsArr.length; i++) {
+                    if (oddsArr[i].decimal < best.decimal) {
+                        best = oddsArr[i];
+                    }
+                }
+
+                // Find the actual round number from the original data
+                var chronological = [].concat(rounds).reverse();
+                var actualRoundNum = chronological[best.round - 1] ? chronological[best.round - 1].round : best.round;
+
+                html += '<div class="flex items-center justify-between ' + player.bgClass + ' border ' + player.borderClass + ' rounded-lg px-4 py-3">' +
+                    '<div class="flex items-center gap-3">' +
+                        '<div class="w-3 h-3 rounded-full" style="background:' + player.color + '"></div>' +
+                        '<span class="font-semibold ' + player.textClass + '">' + player.name + '</span>' +
+                    '</div>' +
+                    '<div class="text-right">' +
+                        '<span class="font-bold text-lg ' + player.textClass + '">' + best.fractional + '</span>' +
+                        '<span class="text-xs text-gray-500 dark:text-gray-400 ml-2">Round ' + actualRoundNum + '</span>' +
+                    '</div>' +
+                '</div>';
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function initOddsHistoryChart() {
+            var canvas = document.getElementById('oddsHistoryChart');
+            if (!canvas) return;
+
+            var isDark = document.documentElement.classList.contains('dark');
+            var textColor = isDark ? '#D1D5DB' : '#374151';
+            var gridColor = isDark ? '#374151' : '#E5E7EB';
+
+            var ctx = canvas.getContext('2d');
+            oddsHistoryChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [
+                        {
+                            label: 'Eggman',
+                            data: [],
+                            borderColor: '#3B82F6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 2.5,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#3B82F6',
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'George',
+                            data: [],
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 2.5,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#10B981',
+                            tension: 0.3,
+                            fill: false
+                        },
+                        {
+                            label: 'Chris',
+                            data: [],
+                            borderColor: '#8B5CF6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderWidth: 2.5,
+                            pointRadius: 4,
+                            pointHoverRadius: 7,
+                            pointBackgroundColor: '#8B5CF6',
+                            tension: 0.3,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Odds (lower = better)',
+                                color: textColor,
+                                font: { size: 11 }
+                            },
+                            ticks: {
+                                color: textColor,
+                                callback: function(value) {
+                                    // Convert decimal odds back to fractional for y-axis labels
+                                    if (value <= 0) return 'Evens';
+                                    if (value >= 100) return '99/1+';
+                                    var prob = 1 / (value + 1);
+                                    return toFractionalOdds(prob);
+                                }
+                            },
+                            grid: { color: gridColor }
+                        },
+                        x: {
+                            ticks: { color: textColor },
+                            grid: { color: gridColor }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: { color: textColor }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var history = getOddsHistory();
+                                    var key = ['eggman', 'george', 'chris'][context.datasetIndex];
+                                    var entry = history[key][context.dataIndex];
+                                    if (entry) {
+                                        return context.dataset.label + ': ' + entry.fractional + ' (' + (entry.prob * 100).toFixed(1) + '%)';
+                                    }
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateOddsHistoryChart() {
+            if (!oddsHistoryChart) return;
+
+            var history = getOddsHistory();
+
+            var isDark = document.documentElement.classList.contains('dark');
+            var textColor = isDark ? '#D1D5DB' : '#374151';
+            var gridColor = isDark ? '#374151' : '#E5E7EB';
+
+            oddsHistoryChart.options.scales.y.ticks.color = textColor;
+            oddsHistoryChart.options.scales.x.ticks.color = textColor;
+            oddsHistoryChart.options.scales.y.grid.color = gridColor;
+            oddsHistoryChart.options.scales.x.grid.color = gridColor;
+            oddsHistoryChart.options.scales.y.title.color = textColor;
+            oddsHistoryChart.options.plugins.legend.labels.color = textColor;
+
+            oddsHistoryChart.data.labels = history.labels;
+            oddsHistoryChart.data.datasets[0].data = history.eggman.map(function(e) { return e.decimal; });
+            oddsHistoryChart.data.datasets[1].data = history.george.map(function(e) { return e.decimal; });
+            oddsHistoryChart.data.datasets[2].data = history.chris.map(function(e) { return e.decimal; });
+
+            oddsHistoryChart.update();
+        }
+
         function updateCharts() {
             // Only update charts if they exist (modal is open)
             if (!trendChart || !favBackerChart) return;
@@ -1891,6 +2253,11 @@
 
             // Update average scores table
             updateAverageScoresTable();
+
+            // Update odds-related components
+            invalidateOddsCache();
+            updateBestOddsTable();
+            updateOddsHistoryChart();
         }
 
         // Initialize everything
