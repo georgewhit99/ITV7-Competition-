@@ -994,6 +994,14 @@
                                     <!-- Table will be populated here -->
                                 </div>
                             </div>
+
+                            <!-- Player Stats Table -->
+                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2 xl:col-span-1">
+                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Player Stats Breakdown</h3>
+                                <div id="playerStatsTable" class="h-full flex flex-col">
+                                    <!-- Table will be populated here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1020,6 +1028,7 @@
                 }
                 updateCharts();
                 updateAverageScoresTable();
+                updatePlayerStatsTable();
             }, 100);
         }
 
@@ -1181,6 +1190,120 @@
             `;
             
             tableContainer.innerHTML = finalHTML;
+        }
+
+        function calculatePlayerStats() {
+            const stats = {
+                eggman: { name: 'Eggman', wins: 0, places: 0, highestOdds5: 0, highestOdds3: 0, color: '#3B82F6' },
+                george: { name: 'George', wins: 0, places: 0, highestOdds5: 0, highestOdds3: 0, color: '#10B981' },
+                chris: { name: 'Chris', wins: 0, places: 0, highestOdds5: 0, highestOdds3: 0, color: '#8B5CF6' }
+            };
+
+            rounds.forEach(function(round) {
+                ['eggman', 'george', 'chris'].forEach(function(key) {
+                    const p = round[key];
+                    stats[key].wins += parseInt(p.win) || 0;
+                    stats[key].places += parseInt(p.place) || 0;
+                    var ho = parseInt(p.highestOdds) || 0;
+                    if (ho === 5) {
+                        stats[key].highestOdds5 += 1;
+                    } else if (ho === 3) {
+                        stats[key].highestOdds3 += 1;
+                    }
+                });
+            });
+
+            return stats;
+        }
+
+        function updatePlayerStatsTable() {
+            const container = document.getElementById('playerStatsTable');
+            if (!container) return;
+
+            const stats = calculatePlayerStats();
+            const players = [stats.eggman, stats.george, stats.chris];
+            const totalRounds = rounds.length;
+
+            // Find leaders in each category
+            const maxWins = Math.max.apply(null, players.map(function(p) { return p.wins; }));
+            const maxPlaces = Math.max.apply(null, players.map(function(p) { return p.places; }));
+            const maxHO5 = Math.max.apply(null, players.map(function(p) { return p.highestOdds5; }));
+            const maxHO3 = Math.max.apply(null, players.map(function(p) { return p.highestOdds3; }));
+
+            var mobileHTML = '<div class="block sm:hidden space-y-3 flex-1">';
+            players.forEach(function(player) {
+                var isWinLeader = player.wins === maxWins && maxWins > 0;
+                var isPlaceLeader = player.places === maxPlaces && maxPlaces > 0;
+                var isHO5Leader = player.highestOdds5 === maxHO5 && maxHO5 > 0;
+                var isHO3Leader = player.highestOdds3 === maxHO3 && maxHO3 > 0;
+                mobileHTML += '<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm">' +
+                    '<div class="flex items-center gap-2 mb-3">' +
+                        '<div class="w-3 h-3 rounded-full" style="background:' + player.color + '"></div>' +
+                        '<span class="font-semibold text-gray-900 dark:text-gray-100">' + player.name + '</span>' +
+                    '</div>' +
+                    '<div class="grid grid-cols-4 gap-2 text-center">' +
+                        '<div>' +
+                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Wins</div>' +
+                            '<div class="text-xl font-bold ' + (isWinLeader ? 'text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.wins + '</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Places</div>' +
+                            '<div class="text-xl font-bold ' + (isPlaceLeader ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.places + '</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">HO (5pts)</div>' +
+                            '<div class="text-xl font-bold ' + (isHO5Leader ? 'text-purple-600 dark:text-purple-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds5 + '</div>' +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">HO (3pts)</div>' +
+                            '<div class="text-xl font-bold ' + (isHO3Leader ? 'text-amber-600 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds3 + '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            });
+            mobileHTML += '</div>';
+
+            var desktopHTML = '<div class="hidden sm:block overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 flex-1">' +
+                '<table class="w-full text-sm">' +
+                    '<thead class="bg-gradient-to-r from-primary to-purple-600 text-white">' +
+                        '<tr>' +
+                            '<th class="px-3 py-3 text-left font-semibold text-xs">Player</th>' +
+                            '<th class="px-3 py-3 text-center font-semibold text-xs">Total Wins</th>' +
+                            '<th class="px-3 py-3 text-center font-semibold text-xs">Total Places</th>' +
+                            '<th class="px-3 py-3 text-center font-semibold text-xs">HO (5pts)</th>' +
+                            '<th class="px-3 py-3 text-center font-semibold text-xs">HO (3pts)</th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+            players.forEach(function(player, index) {
+                var rowClass = index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-750';
+                var isWinLeader = player.wins === maxWins && maxWins > 0;
+                var isPlaceLeader = player.places === maxPlaces && maxPlaces > 0;
+                var isHO5Leader = player.highestOdds5 === maxHO5 && maxHO5 > 0;
+                var isHO3Leader = player.highestOdds3 === maxHO3 && maxHO3 > 0;
+
+                desktopHTML += '<tr class="' + rowClass + ' hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors">' +
+                    '<td class="px-3 py-3 font-medium text-gray-900 dark:text-gray-100">' +
+                        '<div class="flex items-center gap-2">' +
+                            '<div class="w-3 h-3 rounded-full" style="background:' + player.color + '"></div>' +
+                            player.name +
+                        '</div>' +
+                    '</td>' +
+                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isWinLeader ? 'text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.wins + '</span></td>' +
+                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isPlaceLeader ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.places + '</span></td>' +
+                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isHO5Leader ? 'text-purple-600 dark:text-purple-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds5 + '</span></td>' +
+                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isHO3Leader ? 'text-amber-600 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds3 + '</span></td>' +
+                '</tr>';
+            });
+
+            desktopHTML += '</tbody></table></div>';
+
+            var footerHTML = '<div class="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">' +
+                '<span>Across ' + totalRounds + ' round' + (totalRounds !== 1 ? 's' : '') + ' \u2022 Coloured numbers indicate category leader</span>' +
+            '</div>';
+
+            container.innerHTML = mobileHTML + desktopHTML + footerHTML;
         }
 
         function updateTable() {
@@ -1889,8 +2012,9 @@
             trendChart.update();
             favBackerChart.update();
 
-            // Update average scores table
+            // Update average scores table and player stats table
             updateAverageScoresTable();
+            updatePlayerStatsTable();
         }
 
         // Initialize everything
