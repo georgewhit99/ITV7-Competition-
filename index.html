@@ -63,9 +63,9 @@
                     <button onclick="addRound()" id="addRoundBtn" class="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                         Add Round
                     </button>
-                    <button onclick="openBackupModal()" id="backupBtn" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-100 dark:disabled:hover:bg-gray-700" title="Backup & Restore" disabled>
+                    <button onclick="openBackupModal()" id="backupBtn" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37-.94 1.543.826 3.31 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.573-1.066c.426-1.756 2.924-1.756 3.35 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                     </button>
@@ -207,13 +207,13 @@
             </div>
         </div>
 
-       
+        
 
         <!-- Charts Toggle Button -->
         <div class="mb-6">
             <button onclick="toggleCharts()" class="w-full sm:w-auto bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
                 <svg id="chartsIcon" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h10M9 9V5a2 2 0 012-2h2a2 2 0 012 2v4"></path>
                 </svg>
                 <span id="chartsButtonText">Show Charts & Trends</span>
             </button>
@@ -498,7 +498,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Notes (e.g., date, festival, special event)
                             </label>
-                            <textarea id="notesTextarea" rows="4" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none resize-none" placeholder="Enter notes for this round...">${round.notes || ''}</textarea>
+                            <textarea id="notesTextarea" rows="4" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary">${round.notes || ''}</textarea>
                         </div>
                         
                         <div class="bg-blue-50 dark:bg-blue-900/30 p-3 rounded-lg">
@@ -595,9 +595,10 @@
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37-.94 1.543.826 3.31 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37a1.724 1.724 0 002.573-1.066c.426-1.756 2.924-1.756 3.35 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             </svg>
-                            Backup & Restore
+                            Settings
                         </h3>
                         <button onclick="closeBackupModal()" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
                             <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -629,11 +630,22 @@
                                 Select Backup File
                             </button>
                         </div>
+
+                        <div class="bg-red-50 dark:bg-red-900/30 p-4 rounded-lg">
+                            <h4 class="font-semibold text-red-800 dark:text-red-200 mb-2">Reset All Rounds</h4>
+                            <p class="text-sm text-red-700 dark:text-red-300 mb-3">Clear every round and start again from zero</p>
+                            <button onclick="showResetConfirmation()" class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M4 9a8 8 0 0113.3-5.3L20 9M20 15a8 8 0 01-13.3 5.3L4 15"></path>
+                                </svg>
+                                Reset All Rounds
+                            </button>
+                        </div>
                         
                         <div class="bg-yellow-50 dark:bg-yellow-900/30 p-3 rounded-lg">
                             <div class="flex items-start gap-2">
                                 <svg class="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 15.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.278 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
                                 </svg>
                                 <div>
                                     <p class="text-xs text-yellow-800 dark:text-yellow-200 font-medium">Warning</p>
@@ -672,6 +684,72 @@
         function handleBackupEscapeKey(e) {
             if (e.key === 'Escape') {
                 closeBackupModal();
+            }
+        }
+
+        function showResetConfirmation() {
+            closeBackupModal();
+            
+            const modal = document.createElement('div');
+            modal.id = 'resetConfirmModal';
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Reset All Rounds</h3>
+                    <div class="mb-4">
+                        <p class="text-gray-600 dark:text-gray-400 mb-3">This will permanently clear all existing round data and reset the tracker to a fresh start.</p>
+                        <div class="bg-red-50 dark:bg-red-900/30 p-3 rounded-lg">
+                            <p class="text-red-700 dark:text-red-300 text-sm font-medium">⚠️ This cannot be undone.</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-end space-x-3">
+                        <button onclick="closeResetConfirmModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
+                        <button onclick="confirmResetAllRounds()" class="px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors">Reset</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function closeResetConfirmModal() {
+            const modal = document.getElementById('resetConfirmModal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+        async function confirmResetAllRounds() {
+            try {
+                rounds = [];
+                collapsedRounds.clear();
+                updateTable();
+                updateTotals();
+                updateCharts();
+                updateRoundsInfo();
+
+                if (isAdminMode) {
+                    await sendScoreUpdate();
+                }
+
+                closeResetConfirmModal();
+
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2';
+                notification.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    All rounds reset successfully!
+                `;
+                document.body.appendChild(notification);
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 3000);
+            } catch (error) {
+                console.error('Failed to reset all rounds:', error);
+                showImportError('Unable to reset all rounds. Please try again.');
             }
         }
 
@@ -739,7 +817,7 @@
                     </div>
                     <div class="flex justify-end space-x-3">
                         <button onclick="closeImportConfirmModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
-                        <button onclick="confirmImport(${JSON.stringify(importedData).replace(/"/g, '&quot;')})" class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg transition-colors">Import Data</button>
+                        <button onclick="confirmImport(${JSON.stringify(importedData).replace(/"/g, '&quot;')})" class="px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-lg transition-colors">Import</button>
                     </div>
                 </div>
             `;
@@ -820,7 +898,7 @@
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full mx-4">
                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Admin Access Required</h3>
                     <p class="text-gray-600 dark:text-gray-400 mb-4">Please enter the password to enable admin mode:</p>
-                    <input type="password" id="passwordInput" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:border-primary focus:ring-1 focus:ring-primary outline-none mb-4" placeholder="Enter password">
+                    <input type="password" id="passwordInput" class="w-full px-3 py-2 text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary">
                     <div id="passwordError" class="text-red-500 text-sm mb-4 hidden">LOL, Watersmeet isnt the password! Please try again.</div>
                     <div class="flex justify-end space-x-3">
                         <button onclick="closePasswordModal()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">Cancel</button>
@@ -998,1065 +1076,348 @@
                     </div>
                     
                     <!-- Modal Content -->
-                    <div class="flex-1 overflow-auto p-4 sm:p-6">
-                        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 h-full">
-                            <!-- Cumulative Score Trend -->
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
-                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Cumulative Score Trend</h3>
-                                <div class="relative h-64 sm:h-80">
-                                    <canvas id="trendChart" class="w-full h-full"></canvas>
-                                </div>
+                    <div class="p-4 sm:p-6 overflow-y-auto">
+                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Points Trend</h3>
+                                <canvas id="trendChartCanvas" class="w-full h-80"></canvas>
                             </div>
-                            
-                            <!-- Fav Backer Count -->
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px]">
-                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Fav Backer Count</h3>
-                                <div class="relative h-64 sm:h-80">
-                                    <canvas id="favBackerChart" class="w-full h-full"></canvas>
-                                </div>
-                            </div>
-                            
-                            <!-- Average Scores Table -->
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2 xl:col-span-1">
-                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Average Scores by Period</h3>
-                                <div id="averageScoresTable" class="h-full flex flex-col">
-                                    <!-- Table will be populated here -->
-                                </div>
-                            </div>
-
-                            <!-- Player Stats Table -->
-                            <div class="bg-gray-50 dark:bg-gray-700 p-4 sm:p-6 rounded-lg min-h-[300px] sm:min-h-[400px] lg:col-span-2 xl:col-span-1">
-                                <h3 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Player Stats Breakdown</h3>
-                                <div id="playerStatsTable" class="h-full flex flex-col">
-                                    <!-- Table will be populated here -->
-                                </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                                <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Fav Backer</h3>
+                                <canvas id="favBackerChartCanvas" class="w-full h-80"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
             document.body.appendChild(modal);
-            
-            // Prevent body scroll when modal is open
-            document.body.style.overflow = 'hidden';
-            
-            // Close modal when clicking outside
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    closeChartsModal();
-                }
-            });
-            
-            // Close modal with escape key
-            document.addEventListener('keydown', handleEscapeKey);
-            
-            // Initialize charts and table if they haven't been created yet
-            setTimeout(() => {
-                if (!trendChart || !favBackerChart) {
-                    initCharts();
-                }
-                updateCharts();
-                updateAverageScoresTable();
-                updatePlayerStatsTable();
-            }, 100);
+            updateCharts();
         }
 
         function closeChartsModal() {
             const modal = document.getElementById('chartsModal');
             if (modal) {
                 document.body.removeChild(modal);
-                document.body.style.overflow = '';
-                document.removeEventListener('keydown', handleEscapeKey);
             }
         }
 
-        function handleEscapeKey(e) {
-            if (e.key === 'Escape') {
-                closeChartsModal();
-            }
-        }
+        function updateCharts() {
+            const labels = rounds.map((_, index) => `R${index + 1}`);
+            const eggmanScores = rounds.map(round => calculateRoundTotal(round.eggman));
+            const georgeScores = rounds.map(round => calculateRoundTotal(round.george));
+            const chrisScores = rounds.map(round => calculateRoundTotal(round.chris));
 
-        // Calculate average scores for given number of recent rounds
-        function calculateAverageScores(numRounds) {
-            if (rounds.length === 0) return { eggman: 0, george: 0, chris: 0 };
-            
-            const recentRounds = rounds.slice(0, Math.min(numRounds, rounds.length));
+            const cumulativeEggman = [];
+            const cumulativeGeorge = [];
+            const cumulativeChris = [];
             let eggmanTotal = 0, georgeTotal = 0, chrisTotal = 0;
-            
-            recentRounds.forEach(round => {
-                eggmanTotal += calculateRoundTotal(round.eggman);
-                georgeTotal += calculateRoundTotal(round.george);
-                chrisTotal += calculateRoundTotal(round.chris);
-            });
-            
-            const actualRounds = recentRounds.length;
-            return {
-                eggman: actualRounds > 0 ? (eggmanTotal / actualRounds).toFixed(1) : 0,
-                george: actualRounds > 0 ? (georgeTotal / actualRounds).toFixed(1) : 0,
-                chris: actualRounds > 0 ? (chrisTotal / actualRounds).toFixed(1) : 0,
-                actualRounds: actualRounds
-            };
-        }
 
-        function updateAverageScoresTable() {
-            const tableContainer = document.getElementById('averageScoresTable');
-            if (!tableContainer) return;
-            
-            const periods = [
-                { label: 'Last 3 Rounds', rounds: 3, icon: '🔥' },
-                { label: 'Last 8 Rounds', rounds: 8, icon: '📈' },
-                { label: 'Last 15 Rounds', rounds: 15, icon: '📊' }
-            ];
-            
-            let mobileHTML = `
-                <!-- Mobile Layout -->
-                <div class="block sm:hidden space-y-4 flex-1">
-            `;
-            
-            let desktopHTML = `
-                <!-- Desktop Layout -->
-                <div class="hidden sm:block overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 flex-1">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gradient-to-r from-primary to-purple-600 text-white">
-                            <tr>
-                                <th class="px-3 py-2 text-left font-semibold text-xs">Period</th>
-                                <th class="px-2 py-2 text-center font-semibold text-xs">Eggman</th>
-                                <th class="px-2 py-2 text-center font-semibold text-xs">George</th>
-                                <th class="px-2 py-2 text-center font-semibold text-xs">Chris</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-            `;
-            
-            periods.forEach((period, index) => {
-                const averages = calculateAverageScores(period.rounds);
-                const rowClass = index % 2 === 0 
-                    ? 'bg-white dark:bg-gray-800' 
-                    : 'bg-gray-50 dark:bg-gray-750';
-                
-                // Find highest average for this period
-                const scores = [
-                    { player: 'eggman', score: parseFloat(averages.eggman) },
-                    { player: 'george', score: parseFloat(averages.george) },
-                    { player: 'chris', score: parseFloat(averages.chris) }
-                ];
-                scores.sort((a, b) => b.score - a.score);
-                const topPlayer = scores[0].player;
-                
-                // Mobile card for each period
-                mobileHTML += `
-                    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm">
-                        <div class="flex items-center gap-2 mb-3">
-                            <span class="text-xl">${period.icon}</span>
-                            <div>
-                                <div class="font-semibold text-gray-900 dark:text-gray-100">${period.label}</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">
-                                    ${averages.actualRounds} of ${period.rounds} rounds
-                                </div>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="text-center">
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Eggman</div>
-                                <div class="text-lg font-bold ${topPlayer === 'eggman' ? 'text-blue-600 dark:text-blue-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.eggman}</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">George</div>
-                                <div class="text-lg font-bold ${topPlayer === 'george' ? 'text-green-600 dark:text-green-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.george}</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Chris</div>
-                                <div class="text-lg font-bold ${topPlayer === 'chris' ? 'text-purple-600 dark:text-purple-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.chris}</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                // Desktop table row
-                desktopHTML += `
-                    <tr class="${rowClass} hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors">
-                        <td class="px-3 py-3 font-medium text-gray-900 dark:text-gray-100">
-                            <div class="flex items-center gap-2">
-                                <span class="text-base">${period.icon}</span>
-                                <div>
-                                    <div class="text-sm">${period.label}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">
-                                        ${averages.actualRounds} of ${period.rounds} rounds
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-2 py-3 text-center">
-                            <span class="text-lg font-bold ${topPlayer === 'eggman' ? 'text-blue-600 dark:text-blue-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.eggman}</span>
-                        </td>
-                        <td class="px-2 py-3 text-center">
-                            <span class="text-lg font-bold ${topPlayer === 'george' ? 'text-green-600 dark:text-green-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.george}</span>
-                        </td>
-                        <td class="px-2 py-3 text-center">
-                            <span class="text-lg font-bold ${topPlayer === 'chris' ? 'text-purple-600 dark:text-purple-400 animate-glow' : 'text-gray-700 dark:text-gray-300'}">${averages.chris}</span>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            mobileHTML += `
-                </div>
-            `;
-            
-            desktopHTML += `
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            
-            const finalHTML = mobileHTML + desktopHTML + `
-                <div class="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">
-                    <div class="flex items-center justify-center gap-2">
-                        <span class="w-2 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-pulse"></span>
-                        <span>Glowing numbers indicate highest average for that period</span>
-                    </div>
-                </div>
-            `;
-            
-            tableContainer.innerHTML = finalHTML;
-        }
-
-        function calculatePlayerStats() {
-            const stats = {
-                eggman: { name: 'Eggman', wins: 0, places: 0, highestOdds5: 0, highestOdds3: 0, color: '#3B82F6' },
-                george: { name: 'George', wins: 0, places: 0, highestOdds5: 0, highestOdds3: 0, color: '#10B981' },
-                chris: { name: 'Chris', wins: 0, places: 0, highestOdds5: 0, highestOdds3: 0, color: '#8B5CF6' }
-            };
-
-            rounds.forEach(function(round) {
-                ['eggman', 'george', 'chris'].forEach(function(key) {
-                    const p = round[key];
-                    stats[key].wins += parseInt(p.win) || 0;
-                    stats[key].places += parseInt(p.place) || 0;
-                    var ho = parseInt(p.highestOdds) || 0;
-                    if (ho === 5) {
-                        stats[key].highestOdds5 += 1;
-                    } else if (ho === 3) {
-                        stats[key].highestOdds3 += 1;
-                    }
-                });
-            });
-
-            return stats;
-        }
-
-        function updatePlayerStatsTable() {
-            const container = document.getElementById('playerStatsTable');
-            if (!container) return;
-
-            const stats = calculatePlayerStats();
-            const players = [stats.eggman, stats.george, stats.chris];
-            const totalRounds = rounds.length;
-
-            // Find leaders in each category
-            const maxWins = Math.max.apply(null, players.map(function(p) { return p.wins; }));
-            const maxPlaces = Math.max.apply(null, players.map(function(p) { return p.places; }));
-            const maxHO5 = Math.max.apply(null, players.map(function(p) { return p.highestOdds5; }));
-            const maxHO3 = Math.max.apply(null, players.map(function(p) { return p.highestOdds3; }));
-
-            var mobileHTML = '<div class="block sm:hidden space-y-3 flex-1">';
-            players.forEach(function(player) {
-                var isWinLeader = player.wins === maxWins && maxWins > 0;
-                var isPlaceLeader = player.places === maxPlaces && maxPlaces > 0;
-                var isHO5Leader = player.highestOdds5 === maxHO5 && maxHO5 > 0;
-                var isHO3Leader = player.highestOdds3 === maxHO3 && maxHO3 > 0;
-                mobileHTML += '<div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 p-4 shadow-sm">' +
-                    '<div class="flex items-center gap-2 mb-3">' +
-                        '<div class="w-3 h-3 rounded-full" style="background:' + player.color + '"></div>' +
-                        '<span class="font-semibold text-gray-900 dark:text-gray-100">' + player.name + '</span>' +
-                    '</div>' +
-                    '<div class="grid grid-cols-4 gap-2 text-center">' +
-                        '<div>' +
-                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Wins</div>' +
-                            '<div class="text-xl font-bold ' + (isWinLeader ? 'text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.wins + '</div>' +
-                        '</div>' +
-                        '<div>' +
-                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Places</div>' +
-                            '<div class="text-xl font-bold ' + (isPlaceLeader ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.places + '</div>' +
-                        '</div>' +
-                        '<div>' +
-                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">HO (5pts)</div>' +
-                            '<div class="text-xl font-bold ' + (isHO5Leader ? 'text-purple-600 dark:text-purple-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds5 + '</div>' +
-                        '</div>' +
-                        '<div>' +
-                            '<div class="text-xs text-gray-500 dark:text-gray-400 mb-1">HO (3pts)</div>' +
-                            '<div class="text-xl font-bold ' + (isHO3Leader ? 'text-amber-600 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds3 + '</div>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
-            });
-            mobileHTML += '</div>';
-
-            var desktopHTML = '<div class="hidden sm:block overflow-hidden rounded-lg border border-gray-200 dark:border-gray-600 flex-1">' +
-                '<table class="w-full text-sm">' +
-                    '<thead class="bg-gradient-to-r from-primary to-purple-600 text-white">' +
-                        '<tr>' +
-                            '<th class="px-3 py-3 text-left font-semibold text-xs">Player</th>' +
-                            '<th class="px-3 py-3 text-center font-semibold text-xs">Total Wins</th>' +
-                            '<th class="px-3 py-3 text-center font-semibold text-xs">Total Places</th>' +
-                            '<th class="px-3 py-3 text-center font-semibold text-xs">HO (5pts)</th>' +
-                            '<th class="px-3 py-3 text-center font-semibold text-xs">HO (3pts)</th>' +
-                        '</tr>' +
-                    '</thead>' +
-                    '<tbody>';
-
-            players.forEach(function(player, index) {
-                var rowClass = index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-750';
-                var isWinLeader = player.wins === maxWins && maxWins > 0;
-                var isPlaceLeader = player.places === maxPlaces && maxPlaces > 0;
-                var isHO5Leader = player.highestOdds5 === maxHO5 && maxHO5 > 0;
-                var isHO3Leader = player.highestOdds3 === maxHO3 && maxHO3 > 0;
-
-                desktopHTML += '<tr class="' + rowClass + ' hover:bg-blue-50 dark:hover:bg-gray-600 transition-colors">' +
-                    '<td class="px-3 py-3 font-medium text-gray-900 dark:text-gray-100">' +
-                        '<div class="flex items-center gap-2">' +
-                            '<div class="w-3 h-3 rounded-full" style="background:' + player.color + '"></div>' +
-                            player.name +
-                        '</div>' +
-                    '</td>' +
-                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isWinLeader ? 'text-green-600 dark:text-green-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.wins + '</span></td>' +
-                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isPlaceLeader ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.places + '</span></td>' +
-                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isHO5Leader ? 'text-purple-600 dark:text-purple-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds5 + '</span></td>' +
-                    '<td class="px-3 py-3 text-center"><span class="text-lg font-bold ' + (isHO3Leader ? 'text-amber-600 dark:text-amber-400' : 'text-gray-700 dark:text-gray-300') + '">' + player.highestOdds3 + '</span></td>' +
-                '</tr>';
-            });
-
-            desktopHTML += '</tbody></table></div>';
-
-            var footerHTML = '<div class="mt-3 text-xs text-gray-500 dark:text-gray-400 text-center">' +
-                '<span>Across ' + totalRounds + ' round' + (totalRounds !== 1 ? 's' : '') + ' \u2022 Coloured numbers indicate category leader</span>' +
-            '</div>';
-
-            container.innerHTML = mobileHTML + desktopHTML + footerHTML;
-        }
-
-        function updateTable() {
-            updateDesktopTable();
-            updateMobileTable();
-        }
-
-        function updateDesktopTable() {
-            const tbody = document.getElementById('scoreTableBodyDesktop');
-            tbody.innerHTML = '';
-            
-            rounds.forEach((round, index) => {
-                const isCollapsed = collapsedRounds.has(index);
-                
-                // Create header row with round info and toggle button
-                const headerRow = document.createElement('tr');
-                headerRow.className = 'bg-gray-50 dark:bg-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors';
-                headerRow.onclick = () => toggleRound(index);
-                
-                const eggmanTotal = calculateRoundTotal(round.eggman);
-                const georgeTotal = calculateRoundTotal(round.george);
-                const chrisTotal = calculateRoundTotal(round.chris);
-                
-                const expandIcon = isCollapsed ? 
-                    '<svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>' :
-                    '<svg class="w-4 h-4 transform transition-transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
-                
-                // Notes display
-                const notesDisplay = round.notes ? 
-                    `<div class="text-xs text-gray-500 dark:text-gray-400 mt-1 italic truncate">${round.notes}</div>` : '';
-
-                // Notes button - only show if admin mode
-                const notesButton = isAdminMode ? 
-                    `<button onclick="event.stopPropagation(); openNotesModal(${index})" class="ml-2 p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors" title="Edit notes">
-                        <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
-                    </button>` : '';
-                
-                headerRow.innerHTML = `
-                    <td class="px-2 py-3 font-medium">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                ${expandIcon}
-                                <div>
-                                    <div>Round ${round.round}</div>
-                                    ${notesDisplay}
-                                </div>
-                            </div>
-                            ${notesButton}
-                        </div>
-                    </td>
-                    <td colspan="6" class="px-2 py-3 text-center font-medium border-l border-gray-200 dark:border-gray-600">
-                        Total: ${eggmanTotal}
-                    </td>
-                    <td colspan="6" class="px-2 py-3 text-center font-medium border-l border-gray-200 dark:border-gray-600">
-                        Total: ${georgeTotal}
-                    </td>
-                    <td colspan="6" class="px-2 py-3 text-center font-medium border-l border-gray-200 dark:border-gray-600">
-                        Total: ${chrisTotal}
-                    </td>
-                `;
-                
-                tbody.appendChild(headerRow);
-                
-                // Add detail row if not collapsed
-                if (!isCollapsed) {
-                    const detailRow = document.createElement('tr');
-                    detailRow.className = 'border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700';
-                    
-                    detailRow.innerHTML = `
-                        <td class="px-2 py-3"></td>
-                        ${createPlayerCells('eggman', round.eggman, index, eggmanTotal)}
-                        ${createPlayerCells('george', round.george, index, georgeTotal)}
-                        ${createPlayerCells('chris', round.chris, index, chrisTotal)}
-                    `;
-                    
-                    tbody.appendChild(detailRow);
-                }
-            });
-        }
-
-        function updateMobileTable() {
-            const container = document.getElementById('scoreTableMobile');
-            container.innerHTML = '';
-            
-            rounds.forEach((round, index) => {
-                const isCollapsed = collapsedRounds.has(index);
-                const card = document.createElement('div');
-                card.className = 'border-b border-gray-200 dark:border-gray-600';
-                
-                const eggmanTotal = calculateRoundTotal(round.eggman);
-                const georgeTotal = calculateRoundTotal(round.george);
-                const chrisTotal = calculateRoundTotal(round.chris);
-                
-                const expandIcon = isCollapsed ? 
-                    '<svg class="w-5 h-5 transform transition-transform text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>' :
-                    '<svg class="w-5 h-5 transform transition-transform rotate-90 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>';
-                
-                // Notes display for mobile
-                const notesDisplay = round.notes ? 
-                    `<div class="text-xs text-gray-500 dark:text-gray-400 mt-1 italic">${round.notes}</div>` : '';
-
-                // Notes button for mobile - only show if admin mode  
-                const notesButton = isAdminMode ? 
-                    `<button onclick="event.stopPropagation(); openNotesModal(${index})" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-600 rounded transition-colors" title="Edit notes">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                        </svg>
-                    </button>` : '';
-                
-                const headerContent = `
-                    <div class="p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" onclick="toggleRound(${index})">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                ${expandIcon}
-                                <div>
-                                    <span class="font-semibold text-lg">Round ${round.round}</span>
-                                    ${notesDisplay}
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <div class="text-sm text-gray-500 dark:text-gray-400">
-                                    E:${eggmanTotal} | G:${georgeTotal} | C:${chrisTotal}
-                                </div>
-                                ${notesButton}
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                const detailContent = isCollapsed ? '' : `
-                    <div class="px-4 pb-4">
-                        <div class="space-y-4">
-                            ${createMobilePlayerCard('Eggman', 'eggman', round.eggman, index, eggmanTotal, '#3B82F6')}
-                            ${createMobilePlayerCard('George 👑', 'george', round.george, index, georgeTotal, '#10B981')}
-                            ${createMobilePlayerCard('Chris', 'chris', round.chris, index, chrisTotal, '#8B5CF6')}
-                        </div>
-                    </div>
-                `;
-                
-                card.innerHTML = headerContent + detailContent;
-                container.appendChild(card);
-            });
-        }
-
-        function createMobilePlayerCard(playerDisplayName, playerName, playerData, roundIndex, total, color) {
-            const readonly = isAdminMode ? '' : 'readonly';
-            const disabled = isAdminMode ? '' : 'disabled';
-            const inputClass = `w-16 px-2 py-2 text-center text-base border rounded ${isAdminMode ? 'bg-white dark:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600'} border-gray-300 dark:border-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none`;
-            
-            return `
-                <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="font-medium" style="color: ${color}">${playerDisplayName}</div>
-                        <div class="font-bold text-lg">${total}</div>
-                    </div>
-                    <div class="grid grid-cols-5 gap-2 text-xs">
-                        <div class="text-center">
-                            <div class="text-gray-600 dark:text-gray-400 mb-1">Win</div>
-                            <input type="number" value="${playerData.win}" min="0" max="99" ${readonly}
-                                   class="${inputClass}"
-                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'win', this.value); updateTable();">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-gray-600 dark:text-gray-400 mb-1">Place</div>
-                            <input type="number" value="${playerData.place}" min="0" max="99" ${readonly}
-                                   class="${inputClass}"
-                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'place', this.value); updateTable();">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-gray-600 dark:text-gray-400 mb-1">H.Odds</div>
-                            <input type="number" value="${playerData.highestOdds}" min="0" max="99" ${readonly}
-                                   class="${inputClass}"
-                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'highestOdds', this.value); updateTable();">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-gray-600 dark:text-gray-400 mb-1">Bonus</div>
-                            <input type="number" value="${playerData.bonus}" min="-99" max="99" ${readonly}
-                                   class="${inputClass}"
-                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'bonus', this.value); updateTable();">
-                        </div>
-                        <div class="text-center">
-                            <div class="text-gray-600 dark:text-gray-400 mb-1">Fav Backer</div>
-                            <input type="checkbox" ${playerData.favBacker ? 'checked' : ''} ${disabled}
-                                   class="w-5 h-5 text-primary border-gray-300 dark:border-gray-500 rounded focus:ring-primary dark:focus:ring-primary dark:focus:ring-offset-gray-800 focus:ring-2 ${isAdminMode ? '' : 'opacity-50'}"
-                                   onchange="updateRoundData(${roundIndex}, '${playerName}', 'favBacker', this.checked); updateTable();">
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function createPlayerCells(playerName, playerData, roundIndex, total) {
-            const borderClass = playerName === 'eggman' ? '' : 'border-l border-gray-200 dark:border-gray-600';
-            const readonly = isAdminMode ? '' : 'readonly';
-            const disabled = isAdminMode ? '' : 'disabled';
-            const inputClass = `w-12 px-1 py-1 text-center text-base border rounded ${isAdminMode ? 'bg-white dark:bg-gray-700' : 'bg-gray-100 dark:bg-gray-600'} border-gray-300 dark:border-gray-500 focus:border-primary focus:ring-1 focus:ring-primary outline-none`;
-            
-            return `
-                <td class="px-2 py-2 ${borderClass}">
-                    <input type="number" value="${playerData.win}" min="0" max="99" ${readonly}
-                           class="${inputClass}"
-                           onchange="updateRoundData(${roundIndex}, '${playerName}', 'win', this.value)">
-                </td>
-                <td class="px-2 py-2">
-                    <input type="number" value="${playerData.place}" min="0" max="99" ${readonly}
-                           class="${inputClass}"
-                           onchange="updateRoundData(${roundIndex}, '${playerName}', 'place', this.value)">
-                </td>
-                <td class="px-2 py-2">
-                    <input type="number" value="${playerData.highestOdds}" min="0" max="99" ${readonly}
-                           class="${inputClass}"
-                           onchange="updateRoundData(${roundIndex}, '${playerName}', 'highestOdds', this.value)">
-                </td>
-                <td class="px-2 py-2">
-                    <input type="number" value="${playerData.bonus}" min="-99" max="99" ${readonly}
-                           class="${inputClass}"
-                           onchange="updateRoundData(${roundIndex}, '${playerName}', 'bonus', this.value)">
-                </td>
-                <td class="px-2 py-2 text-center">
-                    <input type="checkbox" ${playerData.favBacker ? 'checked' : ''} ${disabled}
-                           class="w-4 h-4 text-primary border-gray-300 dark:border-gray-500 rounded focus:ring-primary dark:focus:ring-primary dark:focus:ring-offset-gray-800 focus:ring-2 ${isAdminMode ? '' : 'opacity-50'}"
-                           onchange="updateRoundData(${roundIndex}, '${playerName}', 'favBacker', this.checked)">
-                </td>
-                <td class="px-2 py-2 font-medium">${total}</td>
-            `;
-        }
-
-        function updateTotals() {
-            updateDynamicStandings();
-        }
-
-        // --- Odds Calculation (Monte Carlo Simulation) ---
-        const TOTAL_ROUNDS = 70;
-        const SIM_COUNT = 5000;
-
-        // Convert a probability (0-1) to simplified fractional odds string
-        function toFractionalOdds(prob) {
-            if (prob <= 0) return '999/1';
-            if (prob >= 1) return 'Evens';
-            // Fractional odds = (1 - p) / p
-            const decimalOdds = (1 - prob) / prob;
-            if (Math.abs(decimalOdds - 1) < 0.05) return 'Evens';
-
-            // Common bookmaker fractions to snap to
-            const commonFracs = [
-                [1,100],[1,50],[1,33],[1,25],[1,20],[1,16],[1,14],[1,12],[1,10],[1,8],[1,7],
-                [1,6],[1,5],[2,9],[1,4],[2,7],[1,3],[4,11],[2,5],[4,9],[1,2],[8,15],
-                [4,7],[8,13],[4,6],[8,11],[4,5],[5,6],[10,11],[1,1],
-                [11,10],[6,5],[5,4],[11,8],[6,4],[13,8],[7,4],[15,8],[2,1],
-                [9,4],[5,2],[11,4],[3,1],[7,2],[4,1],[9,2],[5,1],[6,1],[7,1],[8,1],
-                [9,1],[10,1],[11,1],[12,1],[14,1],[16,1],[18,1],[20,1],[22,1],[25,1],
-                [28,1],[33,1],[40,1],[50,1],[66,1],[80,1],[100,1],[150,1],[200,1],
-                [250,1],[300,1],[500,1],[999,1]
-            ];
-
-            let bestFrac = [1,1];
-            let bestErr = Infinity;
-            for (const [n, d] of commonFracs) {
-                const err = Math.abs(decimalOdds - n / d);
-                if (err < bestErr) {
-                    bestErr = err;
-                    bestFrac = [n, d];
-                }
-            }
-            return bestFrac[0] + '/' + bestFrac[1];
-        }
-
-        // Calculate win probabilities for all players using Monte Carlo
-        function calculateWinProbabilities() {
-            const numPlayed = rounds.length;
-            const remaining = Math.max(0, TOTAL_ROUNDS - numPlayed);
-
-            // Current totals
-            const totals = { eggman: 0, george: 0, chris: 0 };
-            // Per-round scores for computing mean & stddev
-            const perRound = { eggman: [], george: [], chris: [] };
-
-            const sortedRounds = [...rounds].reverse(); // chronological order
-            sortedRounds.forEach(round => {
-                const keys = ['eggman', 'george', 'chris'];
-                keys.forEach(k => {
-                    const pts = calculateRoundTotal(round[k]);
-                    totals[k] += pts;
-                    perRound[k].push(pts);
-                });
-            });
-
-            // If no rounds played yet, return equal chances
-            if (numPlayed === 0) {
-                return {
-                    win: { eggman: 1/3, george: 1/3, chris: 1/3 },
-                    last: { eggman: 1/3, george: 1/3, chris: 1/3 }
-                };
-            }
-
-            // If all rounds played (no remaining), winner/loser is deterministic
-            if (remaining === 0) {
-                const max = Math.max(totals.eggman, totals.george, totals.chris);
-                const min = Math.min(totals.eggman, totals.george, totals.chris);
-                const winners = ['eggman', 'george', 'chris'].filter(k => totals[k] === max);
-                const losers = ['eggman', 'george', 'chris'].filter(k => totals[k] === min);
-                const winResult = { eggman: 0, george: 0, chris: 0 };
-                const lastResult = { eggman: 0, george: 0, chris: 0 };
-                winners.forEach(w => { winResult[w] = 1 / winners.length; });
-                losers.forEach(l => { lastResult[l] = 1 / losers.length; });
-                return { win: winResult, last: lastResult };
-            }
-
-            // Compute mean & std dev per player per round
-            function stats(arr) {
-                const n = arr.length;
-                const mean = arr.reduce((s, v) => s + v, 0) / n;
-                const variance = arr.reduce((s, v) => s + (v - mean) * (v - mean), 0) / n;
-                return { mean: mean, std: Math.sqrt(variance) };
-            }
-
-            const playerStats = {};
-            ['eggman', 'george', 'chris'].forEach(k => {
-                playerStats[k] = stats(perRound[k]);
-                // Ensure minimum std dev so simulation isn't degenerate
-                if (playerStats[k].std < 1) playerStats[k].std = 1;
-            });
-
-            // Box-Muller transform for normal random
-            function randn() {
-                let u = 0, v = 0;
-                while (u === 0) u = Math.random();
-                while (v === 0) v = Math.random();
-                return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-            }
-
-            // Monte Carlo simulation
-            const wins = { eggman: 0, george: 0, chris: 0 };
-            const lasts = { eggman: 0, george: 0, chris: 0 };
-            const keys = ['eggman', 'george', 'chris'];
-
-            for (let sim = 0; sim < SIM_COUNT; sim++) {
-                const projected = {};
-                keys.forEach(k => {
-                    // Project remaining rounds using normal distribution
-                    let futureTotal = 0;
-                    for (let r = 0; r < remaining; r++) {
-                        futureTotal += playerStats[k].mean + playerStats[k].std * randn();
-                    }
-                    projected[k] = totals[k] + futureTotal;
-                });
-
-                // Find winner(s)
-                const maxScore = Math.max(projected.eggman, projected.george, projected.chris);
-                const simWinners = keys.filter(k => Math.abs(projected[k] - maxScore) < 0.001);
-                simWinners.forEach(w => { wins[w] += 1 / simWinners.length; });
-
-                // Find last place(s)
-                const minScore = Math.min(projected.eggman, projected.george, projected.chris);
-                const simLosers = keys.filter(k => Math.abs(projected[k] - minScore) < 0.001);
-                simLosers.forEach(l => { lasts[l] += 1 / simLosers.length; });
-            }
-
-            return {
-                win: {
-                    eggman: wins.eggman / SIM_COUNT,
-                    george: wins.george / SIM_COUNT,
-                    chris: wins.chris / SIM_COUNT
-                },
-                last: {
-                    eggman: lasts.eggman / SIM_COUNT,
-                    george: lasts.george / SIM_COUNT,
-                    chris: lasts.chris / SIM_COUNT
-                }
-            };
-        }
-
-        function updateDynamicStandings() {
-            let eggmanTotal = 0, georgeTotal = 0, chrisTotal = 0;
-            let eggmanFavCount = 0, georgeFavCount = 0, chrisFavCount = 0;
-            
             rounds.forEach(round => {
                 eggmanTotal += calculateRoundTotal(round.eggman);
                 georgeTotal += calculateRoundTotal(round.george);
                 chrisTotal += calculateRoundTotal(round.chris);
-                
-                if (round.eggman.favBacker) eggmanFavCount++;
-                if (round.george.favBacker) georgeFavCount++;
-                if (round.chris.favBacker) chrisFavCount++;
+                cumulativeEggman.push(eggmanTotal);
+                cumulativeGeorge.push(georgeTotal);
+                cumulativeChris.push(chrisTotal);
             });
 
-            // Create players array with totals and sort by score
-            const players = [
-                { 
-                    name: 'Eggman', 
-                    key: 'eggman',
-                    total: eggmanTotal, 
-                    favCount: eggmanFavCount,
-                    color: { primary: '#3B82F6', secondary: '#60A5FA' },
-                    gradientFrom: 'from-blue-50',
-                    gradientTo: 'to-blue-100',
-                    gradientFromDark: 'dark:from-blue-900/30',
-                    gradientToDark: 'dark:to-blue-800/30',
-                    textColor: 'text-blue-600 dark:text-blue-400',
-                    secondaryTextColor: 'text-blue-500 dark:text-blue-300'
-                },
-                { 
-                    name: 'George', 
-                    key: 'george',
-                    total: georgeTotal, 
-                    favCount: georgeFavCount,
-                    color: { primary: '#10B981', secondary: '#34D399' },
-                    gradientFrom: 'from-green-50',
-                    gradientTo: 'to-green-100',
-                    gradientFromDark: 'dark:from-green-900/30',
-                    gradientToDark: 'dark:to-green-800/30',
-                    textColor: 'text-green-600 dark:text-green-400',
-                    secondaryTextColor: 'text-green-500 dark:text-green-300'
-                },
-                { 
-                    name: 'Chris', 
-                    key: 'chris',
-                    total: chrisTotal, 
-                    favCount: chrisFavCount,
-                    color: { primary: '#8B5CF6', secondary: '#A78BFA' },
-                    gradientFrom: 'from-purple-50',
-                    gradientTo: 'to-purple-100',
-                    gradientFromDark: 'dark:from-purple-900/30',
-                    gradientToDark: 'dark:to-purple-800/30',
-                    textColor: 'text-purple-600 dark:text-purple-400',
-                    secondaryTextColor: 'text-purple-500 dark:text-purple-300'
-                }
-            ];
+            const favBackerCounts = {
+                eggman: 0,
+                george: 0,
+                chris: 0
+            };
 
-            // Sort players by total score (descending)
-            players.sort((a, b) => b.total - a.total);
-
-            // Calculate win/last probabilities for odds display
-            const probs = calculateWinProbabilities();
-            const winProbs = probs.win;
-            const lastProbs = probs.last;
-
-            // Calculate position changes
-            const currentPositions = {};
-            players.forEach((player, index) => {
-                currentPositions[player.key] = index + 1;
-            });
-
-            const standingsContainer = document.getElementById('dynamicStandings');
-            standingsContainer.innerHTML = '';
-
-            const maxFavCount = Math.max(...players.map(p => p.favCount));
-
-            players.forEach((player, index) => {
-                const position = index + 1;
-                const previousPosition = previousPositions[player.key] || position;
-                const positionChange = previousPosition - position;
-
-                // Generate position indicator and medal
-                let positionIndicator = '';
-                let medal = '';
-                let specialAnimation = '';
-
-                if (position === 1) {
-                    medal = '<span class="text-2xl animate-bounce-slow">🥇</span>';
-                    specialAnimation = 'animate-pulse-slow';
-                } else if (position === 2) {
-                    medal = '<span class="text-2xl">🥈</span>';
-                } else if (position === 3) {
-                    medal = '<span class="text-2xl">🥉</span>';
-                }
-
-                // Position change arrows - only show if there are previous positions and it's not the first load
-                if (Object.keys(previousPositions).length > 0) {
-                    if (positionChange > 0) {
-                        positionIndicator = '<span class="inline-flex items-center text-green-500 text-sm font-medium animate-bounce">' +
-                            '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">' +
-                            '<path fill-rule="evenodd" d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>' +
-                            '</svg>' +
-                            '+' + positionChange +
-                            '</span>';
-                    } else if (positionChange < 0) {
-                        positionIndicator = '<span class="inline-flex items-center text-red-500 text-sm font-medium">' +
-                            '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">' +
-                            '<path fill-rule="evenodd" d="M14.707 12.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l2.293-2.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>' +
-                            '</svg>' +
-                            positionChange +
-                            '</span>';
-                    } else {
-                        positionIndicator = '<span class="inline-flex items-center text-gray-500 text-sm font-medium">' +
-                            '<svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">' +
-                            '<path fill-rule="evenodd" d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z" clip-rule="evenodd"></path>' +
-                            '</svg>' +
-                            '-' +
-                            '</span>';
+            rounds.forEach(round => {
+                Object.keys(favBackerCounts).forEach(player => {
+                    if (round[player] && round[player].favBacker) {
+                        favBackerCounts[player]++;
                     }
-                }
-
-                // Calculate odds for this player
-                const winProb = winProbs[player.key];
-                const lastProb = lastProbs[player.key];
-                const winOddsStr = toFractionalOdds(winProb);
-                const loseOddsStr = toFractionalOdds(lastProb);
-
-                // Create the standings card
-                const card = document.createElement('div');
-                card.className = 'bg-gradient-to-br ' + player.gradientFrom + ' ' + player.gradientTo + ' ' +
-                                player.gradientFromDark + ' ' + player.gradientToDark + ' p-4 rounded-lg transform transition-all duration-500 hover:scale-105';
-
-                if (specialAnimation) {
-                    card.className += ' ' + specialAnimation;
-                }
-
-                // Add special border for leader
-                if (position === 1) {
-                    card.className += ' ring-2 ring-yellow-400 dark:ring-yellow-300 shadow-lg';
-                }
-
-                const leaderBadge = position === 1 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">👑 LEADER</span>' : '';
-                const tequilaBadge = position === 2 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">🥃 </span>' : '';
-                const tequilathirdBadge = position === 3 ? '<span class="text-yellow-600 dark:text-yellow-400 font-bold animate-wiggle">🥃🥃</span>' : '';
-
-                const favBackingBadge = (player.favCount > 0 && player.favCount === maxFavCount)
-                    ? '<span class="text-xs text-gray-400 dark:text-gray-500 italic ml-1 opacity-70">Fav backing cunt</span>'
-                    : '';
-
-                card.innerHTML =
-                    '<div class="flex items-center justify-between mb-3">' +
-                        '<div class="flex items-center space-x-3">' +
-                            '<div class="flex items-baseline gap-1"><span class="text-2xl font-bold ' + player.textColor + '">' + player.name + '</span>' + favBackingBadge + '</div>' +
-                            medal +
-                        '</div>' +
-                        positionIndicator +
-                    '</div>' +
-                    '<div class="text-3xl font-bold ' + player.textColor + ' mb-2">' + player.total + '</div>' +
-                    // Odds row
-                    '<div class="flex items-center gap-3 mb-2 text-xs">' +
-                        '<div class="flex-1 bg-white/50 dark:bg-black/20 rounded-md px-2 py-1.5 text-center">' +
-                            '<div class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider" style="font-size:0.6rem;">To Win</div>' +
-                            '<div class="font-bold text-green-700 dark:text-green-300 text-sm mt-0.5">' + winOddsStr + '</div>' +
-                        '</div>' +
-                        '<div class="flex-1 bg-white/50 dark:bg-black/20 rounded-md px-2 py-1.5 text-center">' +
-                            '<div class="text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wider" style="font-size:0.6rem;">To Come Last</div>' +
-                            '<div class="font-bold text-red-700 dark:text-red-300 text-sm mt-0.5">' + loseOddsStr + '</div>' +
-                        '</div>' +
-                    '</div>' +
-                    '<div class="text-xs ' + player.secondaryTextColor + ' flex items-center justify-between">' +
-                        '<span>Fav Backer: ' + player.favCount + '</span>' +
-                        leaderBadge + tequilaBadge + tequilathirdBadge +
-                    '</div>';
-
-                standingsContainer.appendChild(card);
+                });
             });
 
-            // Update previous positions for next comparison (only if we have existing data)
-            if (rounds.length > 0) {
-                // Store positions after a small delay to allow for visual feedback
-                setTimeout(() => {
-                    previousPositions = { ...currentPositions };
-                }, 100);
-            }
-        }
-
-        function initCharts() {
-            const isDark = document.documentElement.classList.contains('dark');
-            const textColor = isDark ? '#D1D5DB' : '#374151';
-            const gridColor = isDark ? '#374151' : '#E5E7EB';
-            
-            // Trend Chart
-            const trendCtx = document.getElementById('trendChart').getContext('2d');
-            trendChart = new Chart(trendCtx, {
+            const chartConfig = {
                 type: 'line',
                 data: {
-                    labels: [],
+                    labels,
                     datasets: [
                         {
                             label: 'Eggman',
-                            data: [],
+                            data: cumulativeEggman,
                             borderColor: '#3B82F6',
                             backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            tension: 0.4
+                            tension: 0.4,
+                            fill: false
                         },
                         {
                             label: 'George',
-                            data: [],
-                            borderColor: '#10B981',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            tension: 0.4
+                            data: cumulativeGeorge,
+                            borderColor: '#8B5CF6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4,
+                            fill: false
                         },
                         {
                             label: 'Chris',
-                            data: [],
-                            borderColor: '#8B5CF6',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                            tension: 0.4
+                            data: cumulativeChris,
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4,
+                            fill: false
                         }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { color: textColor },
-                            grid: { color: gridColor }
-                        },
-                        x: {
-                            ticks: { color: textColor },
-                            grid: { color: gridColor }
-                        }
-                    },
                     plugins: {
                         legend: {
-                            labels: { color: textColor }
+                            labels: {
+                                color: document.documentElement.classList.contains('dark') ? '#E5E7EB' : '#374151'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: document.documentElement.classList.contains('dark') ? '#E5E7EB' : '#374151'
+                            },
+                            grid: {
+                                color: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: document.documentElement.classList.contains('dark') ? '#E5E7EB' : '#374151'
+                            },
+                            grid: {
+                                color: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+                            }
                         }
                     }
                 }
-            });
+            };
 
-            // Fav Backer Chart (Bar Chart)
-            const favBackerCtx = document.getElementById('favBackerChart').getContext('2d');
-            favBackerChart = new Chart(favBackerCtx, {
+            const favBackerConfig = {
                 type: 'bar',
                 data: {
                     labels: ['Eggman', 'George', 'Chris'],
                     datasets: [{
                         label: 'Fav Backer Count',
-                        data: [0, 0, 0],
-                        backgroundColor: ['#3B82F6', '#10B981', '#8B5CF6'],
-                        borderColor: ['#1E40AF', '#047857', '#6D28D9'],
-                        borderWidth: 1
+                        data: [favBackerCounts.eggman, favBackerCounts.george, favBackerCounts.chris],
+                        backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981'],
+                        borderRadius: 6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: { 
-                                color: textColor,
-                                stepSize: 1
-                            },
-                            grid: { color: gridColor }
-                        },
-                        x: {
-                            ticks: { color: textColor },
-                            grid: { color: gridColor }
-                        }
-                    },
                     plugins: {
                         legend: {
-                            labels: { color: textColor }
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: document.documentElement.classList.contains('dark') ? '#E5E7EB' : '#374151'
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: document.documentElement.classList.contains('dark') ? '#E5E7EB' : '#374151'
+                            },
+                            grid: {
+                                color: document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+                            }
                         }
                     }
+                }
+            };
+
+            if (document.getElementById('trendChartCanvas')) {
+                if (trendChart) trendChart.destroy();
+                trendChart = new Chart(document.getElementById('trendChartCanvas'), chartConfig);
+            }
+
+            if (document.getElementById('favBackerChartCanvas')) {
+                if (favBackerChart) favBackerChart.destroy();
+                favBackerChart = new Chart(document.getElementById('favBackerChartCanvas'), favBackerConfig);
+            }
+        }
+
+        function updateTotals() {
+            const totals = {
+                eggman: 0,
+                george: 0,
+                chris: 0
+            };
+
+            rounds.forEach(round => {
+                Object.keys(totals).forEach(player => {
+                    totals[player] += calculateRoundTotal(round[player]);
+                });
+            });
+
+            const standings = [
+                { name: 'Eggman', key: 'eggman', score: totals.eggman },
+                { name: 'George', key: 'george', score: totals.george },
+                { name: 'Chris', key: 'chris', score: totals.chris }
+            ].sort((a, b) => b.score - a.score);
+
+            const standingsContainer = document.getElementById('dynamicStandings');
+            standingsContainer.innerHTML = standings.map((player, index) => {
+                const podium = ['🥇', '🥈', '🥉'][index] || '🏅';
+                return `
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-600">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="text-lg font-bold">${podium} ${player.name}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">#${index + 1}</div>
+                        </div>
+                        <div class="text-3xl font-bold text-primary">${player.score}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateTable() {
+            const desktopTableBody = document.getElementById('scoreTableBodyDesktop');
+            const mobileTable = document.getElementById('scoreTableMobile');
+
+            if (!desktopTableBody || !mobileTable) return;
+
+            desktopTableBody.innerHTML = '';
+            mobileTable.innerHTML = '';
+
+            if (rounds.length === 0) {
+                desktopTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="19" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">
+                            No rounds yet. Start a new competition by adding the first round.
+                        </td>
+                    </tr>
+                `;
+                mobileTable.innerHTML = `
+                    <div class="p-4 text-center text-gray-500 dark:text-gray-400">
+                        No rounds yet. Start a new competition by adding the first round.
+                    </div>
+                `;
+                return;
+            }
+
+            rounds.forEach((round, index) => {
+                const isCollapsed = collapsedRounds.has(index);
+                const desktopRow = document.createElement('tr');
+                desktopRow.className = index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-700';
+                desktopRow.innerHTML = `
+                    <td class="px-2 py-3 border-t border-gray-200 dark:border-gray-600">
+                        <div class="flex items-center gap-2">
+                            <button onclick="toggleRound(${index})" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                <svg class="w-4 h-4 transition-transform ${isCollapsed ? '' : 'rotate-90'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                            <span class="font-medium">${round.round}</span>
+                        </div>
+                    </td>
+                    ${renderPlayerCells(round.eggman, index, 'eggman')}
+                    ${renderPlayerCells(round.george, index, 'george')}
+                    ${renderPlayerCells(round.chris, index, 'chris')}
+                `;
+                desktopTableBody.appendChild(desktopRow);
+
+                if (!isCollapsed) {
+                    const mobileCard = document.createElement('div');
+                    mobileCard.className = 'border-b border-gray-200 dark:border-gray-700 p-4';
+                    mobileCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-3">
+                            <button onclick="toggleRound(${index})" class="flex items-center gap-2 font-semibold text-gray-800 dark:text-gray-200">
+                                <svg class="w-4 h-4 transition-transform ${isCollapsed ? '' : 'rotate-90'}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                                Round ${round.round}
+                            </button>
+                            <button onclick="openNotesModal(${index})" class="text-xs text-gray-500 dark:text-gray-400 hover:text-primary">Notes</button>
+                        </div>
+                        <div class="space-y-3">
+                            ${['eggman', 'george', 'chris'].map(player => renderMobilePlayerCard(round[player], player, index)).join('')}
+                        </div>
+                    `;
+                    mobileTable.appendChild(mobileCard);
                 }
             });
         }
 
-        function updateCharts() {
-            // Only update charts if they exist (modal is open)
-            if (!trendChart || !favBackerChart) return;
-            
-            const isDark = document.documentElement.classList.contains('dark');
-            const textColor = isDark ? '#D1D5DB' : '#374151';
-            const gridColor = isDark ? '#374151' : '#E5E7EB';
-            
-            // Update colors for dark mode
-            [trendChart, favBackerChart].forEach(chart => {
-                chart.options.scales.y.ticks.color = textColor;
-                chart.options.scales.x.ticks.color = textColor;
-                chart.options.scales.y.grid.color = gridColor;
-                chart.options.scales.x.grid.color = gridColor;
-                chart.options.plugins.legend.labels.color = textColor;
-            });
-            
-            // Update trend data - reverse order for correct chronological display
-            const sortedRounds = [...rounds].reverse();
-            const labels = sortedRounds.map((_, index) => `Round ${index + 1}`);
-            let eggmanCumulative = 0, georgeCumulative = 0, chrisCumulative = 0;
-            let eggmanFavCount = 0, georgeFavCount = 0, chrisFavCount = 0;
-            
-            const eggmanData = sortedRounds.map(round => {
-                eggmanCumulative += calculateRoundTotal(round.eggman);
-                return eggmanCumulative;
-            });
-            
-            const georgeData = sortedRounds.map(round => {
-                georgeCumulative += calculateRoundTotal(round.george);
-                return georgeCumulative;
-            });
-            
-            const chrisData = sortedRounds.map(round => {
-                chrisCumulative += calculateRoundTotal(round.chris);
-                return chrisCumulative;
-            });
-
-            // Calculate total fav backer counts (not cumulative for bar chart)
-            rounds.forEach(round => {
-                if (round.eggman.favBacker) eggmanFavCount++;
-                if (round.george.favBacker) georgeFavCount++;
-                if (round.chris.favBacker) chrisFavCount++;
-            });
-            
-            // Update trend chart
-            trendChart.data.labels = labels;
-            trendChart.data.datasets[0].data = eggmanData;
-            trendChart.data.datasets[1].data = georgeData;
-            trendChart.data.datasets[2].data = chrisData;
-            
-            // Update fav backer bar chart with total counts
-            favBackerChart.data.datasets[0].data = [eggmanFavCount, georgeFavCount, chrisFavCount];
-            
-            trendChart.update();
-            favBackerChart.update();
-
-            // Update average scores table and player stats table
-            updateAverageScoresTable();
-            updatePlayerStatsTable();
+        function renderPlayerCells(player, roundIndex, playerKey) {
+            const total = calculateRoundTotal(player);
+            const isFavBacker = !!player.favBacker;
+            return `
+                <td class="px-1 py-3 border-t border-gray-200 dark:border-gray-600 text-center ${isFavBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">
+                    <input type="number" min="0" value="${player.win ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'win', this.value)" class="w-8 h-8 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                </td>
+                <td class="px-1 py-3 border-t border-gray-200 dark:border-gray-600 text-center ${isFavBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">
+                    <input type="number" min="0" value="${player.place ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'place', this.value)" class="w-8 h-8 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                </td>
+                <td class="px-1 py-3 border-t border-gray-200 dark:border-gray-600 text-center ${isFavBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">
+                    <input type="number" min="0" value="${player.highestOdds ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'highestOdds', this.value)" class="w-8 h-8 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                </td>
+                <td class="px-1 py-3 border-t border-gray-200 dark:border-gray-600 text-center ${isFavBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">
+                    <input type="number" min="0" value="${player.bonus ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'bonus', this.value)" class="w-8 h-8 text-center border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                </td>
+                <td class="px-1 py-3 border-t border-gray-200 dark:border-gray-600 text-center ${isFavBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">
+                    <input type="checkbox" ${isFavBacker ? 'checked' : ''} onchange="updateRoundData(${roundIndex}, '${playerKey}', 'favBacker', this.checked)" class="w-4 h-4 accent-yellow-500" ${!isAdminMode ? 'disabled' : ''}>
+                </td>
+                <td class="px-1 py-3 border-t border-gray-200 dark:border-gray-600 text-center font-semibold ${isFavBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">${total}</td>
+            `;
         }
 
-        // Initialize everything
-        document.addEventListener('DOMContentLoaded', function() {
-            initPusher();
-            loadInitialData();
-        });
+        function renderMobilePlayerCard(player, playerKey, roundIndex) {
+            const total = calculateRoundTotal(player);
+            const labelMap = {
+                eggman: 'Eggman',
+                george: 'George',
+                chris: 'Chris'
+            };
+            return `
+                <div class="rounded-lg border border-gray-200 dark:border-gray-600 p-3 ${player.favBacker ? 'bg-yellow-50 dark:bg-yellow-900/20' : ''}">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-medium text-gray-800 dark:text-gray-200">${labelMap[playerKey]}</span>
+                        <span class="text-sm font-bold text-primary">${total} pts</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-xs">
+                        <label class="text-gray-600 dark:text-gray-400">
+                            <span class="block mb-1">W</span>
+                            <input type="number" min="0" value="${player.win ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'win', this.value)" class="w-full px-1 py-1.5 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                        </label>
+                        <label class="text-gray-600 dark:text-gray-400">
+                            <span class="block mb-1">P</span>
+                            <input type="number" min="0" value="${player.place ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'place', this.value)" class="w-full px-1 py-1.5 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                        </label>
+                        <label class="text-gray-600 dark:text-gray-400">
+                            <span class="block mb-1">HO</span>
+                            <input type="number" min="0" value="${player.highestOdds ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'highestOdds', this.value)" class="w-full px-1 py-1.5 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                        </label>
+                    </div>
+                    <div class="mt-2 flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+                        <label class="flex items-center gap-2">
+                            <span>Bonus</span>
+                            <input type="number" min="0" value="${player.bonus ?? ''}" onchange="updateRoundData(${roundIndex}, '${playerKey}', 'bonus', this.value)" class="w-14 px-1 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white" ${!isAdminMode ? 'disabled' : ''}>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <span>Fav</span>
+                            <input type="checkbox" ${player.favBacker ? 'checked' : ''} onchange="updateRoundData(${roundIndex}, '${playerKey}', 'favBacker', this.checked)" class="w-4 h-4 accent-yellow-500" ${!isAdminMode ? 'disabled' : ''}>
+                        </label>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initial load
+        loadInitialData();
+        initPusher();
     </script>
 </body>
 </html>
